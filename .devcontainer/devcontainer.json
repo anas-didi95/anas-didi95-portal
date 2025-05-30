@@ -26,7 +26,8 @@
       "extensions": [
         "donjayamanne.githistory",
         "redhat.vscode-xml",
-        "redhat.vscode-yaml"
+        "redhat.vscode-yaml",
+        "richardwillis.vscode-spotless-gradle"
       ]
     }
   }

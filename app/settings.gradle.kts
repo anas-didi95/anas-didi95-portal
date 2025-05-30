@@ -1,4 +1,1 @@
-
-
-rootProject.name="portal"
-
+rootProject.name = "portal"
