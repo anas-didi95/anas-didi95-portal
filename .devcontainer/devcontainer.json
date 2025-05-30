@@ -12,6 +12,15 @@
       "installGradle": "false"
     },
     "ghcr.io/devcontainers/features/node:1": {}
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "donjayamanne.githistory",
+        "redhat.vscode-xml",
+        "redhat.vscode-yaml"
+      ]
+    }
   }
 
   // Use 'forwardPorts' to make a list of ports inside the container available locally.
