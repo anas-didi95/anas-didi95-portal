@@ -25,18 +25,13 @@ env:
   NODE_VERSION: 22.16.0
 
 jobs:
-  prepare:
+  build-app:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout project
         uses: actions/checkout@v4
-
-  build-app:
-    needs: prepare
-    runs-on: ubuntu-latest
-    steps:
       - name: Change workdir
-        run: ls
+        run: cd app/ && ls -A
       - name: Set up JDK ${{ env.JAVA_VERSION }}
         uses: actions/setup-java@v4
         with:
@@ -45,14 +40,21 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@417ae3ccd767c252f5661f1ace9f835f9654f2b5 # v3.1.0
       - name: Build with Gradle Wrapper
-        run: ./app/gradlew clean build
+        run: ./gradlew clean build
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: portal-app
+          path: build/
+          retention-days: 1
 
   build-web:
-    needs: prepare
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout project
+        uses: actions/checkout@v4
       - name: Change workdir
-        run: ls
+        run: cd web/ && ls -A
       - name: Use Node.js ${{ env.NODE_VERSION }}
         uses: actions/setup-node@v4
         with:
@@ -62,6 +64,12 @@ jobs:
         run: npm ci
       - name: Build distribution
         run: npm run build --if-present
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: portal-web
+          path: dist/
+          retention-days: 1
 
   docker-publish:
     needs: [build-app, build-web]
@@ -114,6 +122,8 @@ jobs:
     steps:
       - name: Checkout project
         uses: actions/checkout@v4
+      - name: Change workdir
+        run: cd app/ && ls -A
       - name: Set up JDK ${{ env.JAVA_VERSION}}
         uses: actions/setup-java@v4
         with:
