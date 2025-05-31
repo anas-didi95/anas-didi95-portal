@@ -1,0 +1,5 @@
+micronaut:
+  router:
+    static-resources:
+      portalweb:
+        paths: file:/home/app/dist/

@@ -1,0 +1,9 @@
+FROM eclipse-temurin:21-alpine
+WORKDIR /home/app/
+COPY --link app/build/docker/main/layers/libs/ /home/app/libs/
+COPY --link app/build/docker/main/layers/app/ /home/app/
+COPY --link app/build/docker/main/layers/resources/ /home/app/resources/
+COPY --link web/dist/ /home/app/dist/
+EXPOSE 8080
+ENTRYPOINT ["sh", "-c"]
+CMD ["java -jar -Dmicronaut.environments=prod /home/app/application.jar"]
