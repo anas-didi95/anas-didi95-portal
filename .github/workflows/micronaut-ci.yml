@@ -42,11 +42,15 @@ jobs:
         uses: gradle/actions/setup-gradle@417ae3ccd767c252f5661f1ace9f835f9654f2b5 # v3.1.0
       - name: Build with Gradle Wrapper
         run: ./gradlew clean build
+      - name: Prepare artifact
+        run: |
+          mkdir artifact
+          cp -Rv build/ artifact/
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: portal-app
-          path: app/build/
+          name: app
+          path: app/artifact/
           retention-days: 1
 
   build-web:
@@ -65,11 +69,15 @@ jobs:
         run: npm ci
       - name: Build distribution
         run: npm run build --if-present
+      - name: Prepare artifact
+        run: |
+          mkdir artifact
+          cp -Rv dist/ artifact/
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: portal-web
-          path: web/dist/
+          name: web
+          path: web/artifact/
           retention-days: 1
 
   docker-publish:
@@ -80,6 +88,11 @@ jobs:
       packages: write
       id-token: write
     steps:
+      - name: Checkout Dockerfile
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: Dockerfile.publish
+          sparse-checkout-cone-mode: false
       - name: Download artifacts
         uses: actions/download-artifact@v4
       - name: Display structure of downloaded files
