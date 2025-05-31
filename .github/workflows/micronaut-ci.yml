@@ -27,6 +27,9 @@ env:
 jobs:
   build-app:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./app
     steps:
       - name: Checkout project
         uses: actions/checkout@v4
@@ -45,16 +48,17 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: portal-app
-          path: build/
+          path: app/build/
           retention-days: 1
 
   build-web:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./web
     steps:
       - name: Checkout project
         uses: actions/checkout@v4
-      - name: Change workdir
-        run: cd web/ && ls -A
       - name: Use Node.js ${{ env.NODE_VERSION }}
         uses: actions/setup-node@v4
         with:
@@ -68,7 +72,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: portal-web
-          path: dist/
+          path: web/dist/
           retention-days: 1
 
   docker-publish:
@@ -114,20 +118,3 @@ jobs:
           TAGS: ${{ steps.meta.outputs.tags }}
           DIGEST: ${{ steps.build-and-push.outputs.digest }}
         run: echo "${TAGS}" | xargs -I {} cosign sign --yes {}@${DIGEST}
-
-  dependency-submission:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    steps:
-      - name: Checkout project
-        uses: actions/checkout@v4
-      - name: Change workdir
-        run: cd app/ && ls -A
-      - name: Set up JDK ${{ env.JAVA_VERSION}}
-        uses: actions/setup-java@v4
-        with:
-          java-version: ${{ env.JAVA_VERSION }}
-          distribution: ${{ env.JAVA_DIST }}
-      - name: Generate and submit dependency graph
-        uses: gradle/actions/dependency-submission@417ae3ccd767c252f5661f1ace9f835f9654f2b5 # v3.1.0
