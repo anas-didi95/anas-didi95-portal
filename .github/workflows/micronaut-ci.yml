@@ -36,7 +36,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Change workdir
-        run: ls -A
+        run: ls
       - name: Set up JDK ${{ env.JAVA_VERSION }}
         uses: actions/setup-java@v4
         with:
@@ -45,14 +45,14 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@417ae3ccd767c252f5661f1ace9f835f9654f2b5 # v3.1.0
       - name: Build with Gradle Wrapper
-        run: ./gradlew clean build
+        run: ./app/gradlew clean build
 
   build-web:
     needs: prepare
     runs-on: ubuntu-latest
     steps:
       - name: Change workdir
-        run: ls -A
+        run: ls
       - name: Use Node.js ${{ env.NODE_VERSION }}
         uses: actions/setup-node@v4
         with:
