@@ -4,7 +4,7 @@ import { TanStackRouterVite } from '@tanstack/router-plugin/vite'
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: "/portalweb/",
+  base: "/portal/web/",
   plugins: [
     TanStackRouterVite({ target: 'react', autoCodeSplitting: true }),
     react()],

@@ -3,9 +3,10 @@ micronaut:
     name: portal
   server:
     host: 0.0.0.0
+    context-path: /portal
   router:
     static-resources:
       portalweb:
         enabled: true
-        mapping: /portalweb/**
+        mapping: /web/**
         paths: file:/home/vscode/workspace/web/dist/
