@@ -6,6 +6,7 @@ import {
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { routeTree } from "./routeTree.gen";
+import "./styles/app.scss";
 
 const history = createHashHistory();
 const router = createRouter({ routeTree, history });
