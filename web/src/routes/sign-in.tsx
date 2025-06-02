@@ -11,7 +11,11 @@ export const Route = createFileRoute("/sign-in")({
 });
 
 function SignInPage() {
-  const { register, handleSubmit } = useForm<ISignInForm>();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<ISignInForm>();
 
   const handleSignIn = (data: ISignInForm) => {
     console.log("[handleSignIn] data", data);
@@ -28,13 +32,17 @@ function SignInPage() {
                   label="Username"
                   type="text"
                   register={register}
+                  errors={errors}
                   name="username"
+                  rule={{ required: true }}
                 />
                 <FormInput
                   label="Password"
                   type="password"
                   register={register}
+                  errors={errors}
                   name="password"
+                  rule={{ required: true }}
                 />
                 <br />
                 <ButtonGroup align="right">

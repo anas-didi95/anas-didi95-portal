@@ -11,7 +11,7 @@ function Button({ label, color, type }: IButton) {
       style += " is-primary";
       break;
     case "success":
-      style += " is-success"
+      style += " is-success";
   }
 
   return (
