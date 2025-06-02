@@ -1,6 +1,6 @@
 interface IButton {
   label: string;
-  color: "primary";
+  color: "primary" | "success";
   type: "button" | "submit" | "reset";
 }
 
@@ -10,6 +10,8 @@ function Button({ label, color, type }: IButton) {
     case "primary":
       style += " is-primary";
       break;
+    case "success":
+      style += " is-success"
   }
 
   return (

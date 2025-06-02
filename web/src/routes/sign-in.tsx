@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useForm } from "react-hook-form";
 import Button from "../components/Button";
 import ButtonGroup from "../components/ButtonGroup";
 import Card from "../components/Card";
@@ -10,18 +11,34 @@ export const Route = createFileRoute("/sign-in")({
 });
 
 function SignInPage() {
+  const { register, handleSubmit } = useForm<ISignInForm>();
+
+  const handleSignIn = (data: ISignInForm) => {
+    console.log("[handleSignIn] data", data);
+  };
+
   return (
     <section className="hero is-fullheight">
       <div className="hero-body">
         <div className="columns container">
           <div className="column is-6 is-offset-3">
             <Card label="Sign In">
-              <Form>
-                <FormInput label="Username" type="text" />
-                <FormInput label="Password" type="password" />
+              <Form onSubmit={handleSubmit(handleSignIn)}>
+                <FormInput
+                  label="Username"
+                  type="text"
+                  register={register}
+                  name="username"
+                />
+                <FormInput
+                  label="Password"
+                  type="password"
+                  register={register}
+                  name="password"
+                />
                 <br />
                 <ButtonGroup align="right">
-                  <Button color="primary" type="submit" label="Sign In" />
+                  <Button color="success" type="submit" label="Sign In" />
                 </ButtonGroup>
               </Form>
             </Card>
@@ -30,4 +47,9 @@ function SignInPage() {
       </div>
     </section>
   );
+}
+
+interface ISignInForm {
+  username: string;
+  password: string;
 }
