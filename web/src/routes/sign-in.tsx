@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useForm } from "react-hook-form";
 import Button from "../components/Button";
 import ButtonGroup from "../components/ButtonGroup";
@@ -16,9 +16,11 @@ function SignInPage() {
     handleSubmit,
     formState: { errors },
   } = useForm<ISignInForm>();
+  const navigate = useNavigate();
 
   const handleSignIn = (data: ISignInForm) => {
     console.log("[handleSignIn] data", data);
+    void navigate({ to: "/dashboard" });
   };
 
   return (
