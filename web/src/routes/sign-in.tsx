@@ -1,11 +1,13 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
+import type { ISignInForm } from "../commons/types";
 import Button from "../components/Button";
 import ButtonGroup from "../components/ButtonGroup";
 import Card from "../components/Card";
 import Form from "../components/Form";
 import FormInput from "../components/FormInput";
+import { useAuthSignIn } from "../services/auth-service";
 
 export const Route = createFileRoute("/sign-in")({
   component: SignInPage,
@@ -18,11 +20,16 @@ function SignInPage() {
     formState: { errors },
   } = useForm<ISignInForm>();
   const navigate = useNavigate();
+  const { mutate } = useAuthSignIn();
 
   const handleSignIn = (data: ISignInForm) => {
     console.log("[handleSignIn] data", data);
-    toast.success("Login Success");
-    void navigate({ to: "/dashboard" });
+    mutate(data, {
+      onSuccess: () => {
+        toast.success("Login Success");
+        void navigate({ to: "/dashboard" });
+      },
+    });
   };
 
   return (
@@ -61,9 +68,4 @@ function SignInPage() {
       </section>
     </main>
   );
-}
-
-interface ISignInForm {
-  username: string;
-  password: string;
 }

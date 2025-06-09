@@ -8,7 +8,7 @@ interface IConf {
   timeout?: number;
 }
 
-export const useAxios = (url: string, { conf }: { conf?: IConf }) => {
+export const useAxios = (url: string, conf?: IConf) => {
   const navigate = useNavigate();
 
   const contentType = conf?.contentType ?? "json";
@@ -24,8 +24,12 @@ export const useAxios = (url: string, { conf }: { conf?: IConf }) => {
       "Content-Type": "application/json",
     },
     transformRequest: (reqBody: unknown) => {
-      if (!reqBody || contentType === "json") {
+      if (!reqBody) {
         return reqBody;
+      }
+
+      if (contentType === "json") {
+        return JSON.stringify(reqBody);
       }
 
       if (useFormData) {
