@@ -13,7 +13,11 @@ repositories { mavenCentral() }
 
 dependencies {
   annotationProcessor("io.micronaut:micronaut-http-validation")
+  annotationProcessor("io.micronaut.security:micronaut-security-annotations")
   annotationProcessor("io.micronaut.serde:micronaut-serde-processor")
+  implementation("io.micrometer:context-propagation")
+  implementation("io.micronaut.reactor:micronaut-reactor")
+  implementation("io.micronaut.security:micronaut-security-session")
   implementation("io.micronaut.serde:micronaut-serde-jackson")
   compileOnly("io.micronaut:micronaut-http-client")
   runtimeOnly("ch.qos.logback:logback-classic")

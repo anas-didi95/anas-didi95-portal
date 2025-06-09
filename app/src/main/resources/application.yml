@@ -3,10 +3,41 @@ micronaut:
     name: portal
   server:
     host: 0.0.0.0
-    context-path: /portal
   router:
     static-resources:
-      portalweb:
+      web:
         enabled: true
-        mapping: /web/**
+        mapping: /portal/web/**
         paths: file:/home/vscode/workspace/web/dist/
+  security:
+    enabled: true
+    authentication: session
+    endpoints:
+      login:
+        enabled: true
+        path: /portal/signIn
+      logout:
+        enabled: true
+        path: /portal/signOut
+    redirect:
+      enabled: false
+    intercept-url-map:
+      - pattern: ${micronaut.router.static-resources.web.mapping}
+        http-method: GET
+        access:
+          - isAnonymous()
+      - pattern: ${micronaut.security.endpoints.login.path}
+        http-method: POST
+        access:
+          - isAnonymous()
+      - pattern: ${micronaut.security.endpoints.logout.path}
+        http-method: POST
+        access:
+          - isAnonymous()
+      - pattern: /portal/api/**
+        http-method: POST
+        access:
+          - isAuthenticated()
+  session:
+    http:
+      cookie-path: /portal

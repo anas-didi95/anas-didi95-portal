@@ -1,0 +1,25 @@
+# DEV
+@BASE_URL=http://localhost:8080
+
+###
+
+POST {{BASE_URL}}/portal/signIn
+Accept: application/json
+Content-Type: application/json
+
+{
+  "username": "sherlock",
+  "password": "password"
+}
+
+###
+
+POST {{BASE_URL}}/portal/signOut
+Accept: application/json
+Content-Type: application/json
+
+###
+
+POST {{BASE_URL}}/portal/api/auth/test
+Accept: application/json
+Content-Type: application/json
