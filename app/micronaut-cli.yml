@@ -6,11 +6,17 @@ buildTool: gradle_kotlin
 features:
   [
     app-name,
+    data,
+    data-jdbc,
     gradle,
+    h2,
     http-client-test,
     java,
     java-application,
+    jdbc-hikari,
+    jul-to-slf4j,
     junit,
+    liquibase,
     logback,
     micronaut-aot,
     micronaut-build,
