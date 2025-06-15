@@ -41,12 +41,14 @@ micronaut:
   session:
     http:
       cookie-path: /portal
+
+datasources:
+  default:
+    url: jdbc:h2:./db/portal;AUTO_SERVER=TRUE
+    username: sa
+    password: sa
+
+liquibase:
   datasources:
     default:
-      url: jdbc:h2:mem:devDb;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE
-      username: sa
-      password: ""
-  liquibase:
-    datasources:
-      default:
-        change-log: classpath:db/liquibase-changelog.xml
+      change-log: classpath:db/db.changelog-main.xml

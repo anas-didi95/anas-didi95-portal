@@ -31,7 +31,8 @@
         "redhat.vscode-xml",
         "redhat.vscode-yaml",
         "richardwillis.vscode-spotless-gradle",
-        "humao.rest-client"
+        "humao.rest-client",
+        "chris-rimmer.liquibase-snippets"
       ]
     }
   }
