@@ -18,28 +18,28 @@ public abstract class BaseEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
-  @Column(name = "Id")
+  @Column(name = "ID")
   private UUID id;
 
-  @Column(name = "IsDel")
+  @Column(name = "IS_DEL")
   private Boolean isDeleted;
 
   @Version
-  @Column(name = "Ver")
+  @Column(name = "VER")
   private Integer version;
 
-  @Column(name = "CreateBy")
+  @Column(name = "CREATE_BY")
   private String createBy;
 
   @DateCreated
-  @Column(name = "CreateDt")
+  @Column(name = "CREATE_DT")
   private OffsetDateTime createDate;
 
-  @Column(name = "UpdateBy")
+  @Column(name = "UPDATE_BY")
   private String updateBy;
 
   @DateUpdated
-  @Column(name = "UpdateDt")
+  @Column(name = "UPDATE_DT")
   private Instant updateDate;
 
   public UUID getId() {

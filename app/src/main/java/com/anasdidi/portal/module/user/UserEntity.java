@@ -12,13 +12,13 @@ import jakarta.persistence.Table;
 @Table(name = "T_USER")
 public class UserEntity extends BaseEntity {
 
-  @Column(name = "Username")
+  @Column(name = "USERNAME")
   private String username;
 
-  @Column(name = "Pwd")
+  @Column(name = "PWD")
   private String password;
 
-  @Column(name = "Nm")
+  @Column(name = "NM")
   private String name;
 
   public String getUsername() {

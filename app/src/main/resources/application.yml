@@ -35,20 +35,16 @@ micronaut:
     intercept-url-map:
       - pattern: ${micronaut.router.static-resources.web.mapping}
         http-method: GET
-        access:
-          - isAnonymous()
+        access: isAnonymous()
       - pattern: ${micronaut.security.endpoints.login.path}
         http-method: POST
-        access:
-          - isAnonymous()
+        access: isAnonymous()
       - pattern: ${micronaut.security.endpoints.logout.path}
         http-method: POST
-        access:
-          - isAnonymous()
+        access: isAnonymous()
       - pattern: /api/**
         http-method: POST
-        access:
-          - isAuthenticated()
+        access: isAuthenticated()
 
 datasources:
   default:
@@ -59,6 +55,7 @@ datasources:
 liquibase:
   datasources:
     default:
+      enabled: true
       change-log: classpath:db/db.changelog-main.xml
 
 jpa:
