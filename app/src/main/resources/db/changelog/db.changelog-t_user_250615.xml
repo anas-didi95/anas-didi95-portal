@@ -31,7 +31,7 @@
         <constraints nullable="false" />
       </column>
       <!-- Metadata -->
-      <column name="UserId" type="VARCHAR(20)">
+      <column name="Username" type="VARCHAR(20)">
         <constraints nullable="false" />
       </column>
       <column name="Pwd" type="VARCHAR(100)">
@@ -44,9 +44,9 @@
   </changeSet>
 
   <changeSet id="db.changelog-t_user_250615-2" author="author">
-    <addUniqueConstraint tableName="T_USER" columnNames="UserId" />
-    <createIndex indexName="IX_USER_UserId" tableName="T_USER">
-      <column name="UserId" />
+    <addUniqueConstraint tableName="T_USER" columnNames="Username" />
+    <createIndex indexName="IX_USER_Username" tableName="T_USER">
+      <column name="Username" />
     </createIndex>
   </changeSet>
 </databaseChangeLog>

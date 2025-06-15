@@ -68,3 +68,7 @@ jpa:
         physical_naming_strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
         hbm2ddl:
           auto: validate
+
+logger:
+  levels:
+    com.anasdidi.portal: DEBUG

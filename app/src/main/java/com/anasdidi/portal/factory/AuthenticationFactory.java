@@ -14,6 +14,8 @@ import jakarta.inject.Named;
 import jakarta.inject.Singleton;
 import java.util.Optional;
 import java.util.concurrent.ExecutorService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
 import reactor.core.scheduler.Scheduler;
@@ -22,6 +24,7 @@ import reactor.core.scheduler.Schedulers;
 @Factory
 public class AuthenticationFactory {
 
+  private final Logger log = LoggerFactory.getLogger(AuthenticationFactory.class);
   private final Scheduler scheduler;
   private final UserRepository userRepository;
 
@@ -37,11 +40,12 @@ public class AuthenticationFactory {
     return (requestContext, authenticationRequest) ->
         Flux.<AuthenticationResponse>create(
                 emitter -> {
-                  System.out.println("HERE");
-                  Optional<UserEntity> result =
-                      userRepository.findByUserId(authenticationRequest.getIdentity());
+                  log.trace("[authenticationProvider] Start authentication...");
+
+                  String username = authenticationRequest.getIdentity();
+                  Optional<UserEntity> result = userRepository.findByUsername(username);
                   if (result.isEmpty()) {
-                    System.out.println("HERE 1");
+                    log.error("[authenticationProvider] User Not Found! {}", username);
                     emitter.error(
                         new AuthenticationException(
                             new AuthenticationFailed(AuthenticationFailureReason.USER_NOT_FOUND)));
@@ -49,19 +53,19 @@ public class AuthenticationFactory {
 
                   UserEntity userEntity = result.get();
                   if (userEntity.getIsDeleted()) {
-                    System.out.println("HERE 2");
+                    log.error("[authenticationProvider] User Deleted! {}", username);
                     emitter.error(
                         new AuthenticationException(
                             new AuthenticationFailed(AuthenticationFailureReason.USER_DISABLED)));
                   } else if (!userEntity.getPassword().equals(authenticationRequest.getSecret())) {
-                    System.out.println("HERE 3");
+                    log.error("[authenticationProvider] User Password Not Matched! {}", username);
                     emitter.error(
                         new AuthenticationException(
                             new AuthenticationFailed(
                                 AuthenticationFailureReason.CREDENTIALS_DO_NOT_MATCH)));
                   } else {
-                    System.out.println("OK");
-                    emitter.next(AuthenticationResponse.success(userEntity.getUserId()));
+                    log.debug("[authenticationProvider] User authenticated. {}", username);
+                    emitter.next(AuthenticationResponse.success(userEntity.getUsername()));
                     emitter.complete();
                   }
                 },
