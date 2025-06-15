@@ -16,19 +16,24 @@ dependencies {
   annotationProcessor("io.micronaut:micronaut-http-validation")
   annotationProcessor("io.micronaut.security:micronaut-security-annotations")
   annotationProcessor("io.micronaut.serde:micronaut-serde-processor")
+  annotationProcessor("io.micronaut.validation:micronaut-validation-processor")
   implementation("io.micrometer:context-propagation")
-  implementation("io.micronaut.data:micronaut-data-jdbc")
+  implementation("io.micronaut.data:micronaut-data-hibernate-jpa")
   implementation("io.micronaut.liquibase:micronaut-liquibase")
   implementation("io.micronaut.reactor:micronaut-reactor")
-  implementation("io.micronaut.security:micronaut-security-session")
+  implementation("io.micronaut.security:micronaut-security-jwt")
   implementation("io.micronaut.serde:micronaut-serde-jackson")
   implementation("io.micronaut.sql:micronaut-jdbc-hikari")
+  implementation("io.micronaut.validation:micronaut-validation")
+  implementation("jakarta.validation:jakarta.validation-api")
   implementation("org.slf4j:jul-to-slf4j")
   compileOnly("io.micronaut:micronaut-http-client")
   runtimeOnly("ch.qos.logback:logback-classic")
   runtimeOnly("com.h2database:h2")
   runtimeOnly("org.yaml:snakeyaml")
   testImplementation("io.micronaut:micronaut-http-client")
+  aotPlugins(platform("io.micronaut.platform:micronaut-platform:4.8.3"))
+  aotPlugins("io.micronaut.security:micronaut-security-aot")
 }
 
 application { mainClass = "com.anasdidi.portal.Application" }
@@ -58,6 +63,7 @@ micronaut {
     deduceEnvironment = true
     optimizeNetty = true
     replaceLogbackXml = true
+    configurationProperties.put("micronaut.security.jwks.enabled", "false")
   }
 }
 

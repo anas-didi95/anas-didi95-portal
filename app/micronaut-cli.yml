@@ -7,7 +7,7 @@ features:
   [
     app-name,
     data,
-    data-jdbc,
+    data-jpa,
     gradle,
     h2,
     http-client-test,
@@ -25,10 +25,11 @@ features:
     reactor,
     readme,
     security-annotations,
-    security-session,
+    security-jwt,
     serialization-jackson,
     shade,
     static-resources,
+    validation,
     yaml,
     yaml-build,
   ]

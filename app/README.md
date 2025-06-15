@@ -19,10 +19,6 @@
 
 - [Micronaut Serialization Jackson Core documentation](https://micronaut-projects.github.io/micronaut-serialization/latest/guide/)
 
-## Feature security-session documentation
-
-- [Micronaut Security Session documentation](https://micronaut-projects.github.io/micronaut-security/latest/guide/index.html#session)
-
 ## Feature reactor documentation
 
 - [Micronaut Reactor documentation](https://micronaut-projects.github.io/micronaut-reactor/snapshot/guide/index.html)
@@ -30,10 +26,6 @@
 ## Feature jul-to-slf4j documentation
 
 - [https://www.slf4j.org/legacy.html#jul-to-slf4jBridge](https://www.slf4j.org/legacy.html#jul-to-slf4jBridge)
-
-## Feature data-jdbc documentation
-
-- [Micronaut Data JDBC documentation](https://micronaut-projects.github.io/micronaut-data/latest/guide/index.html#jdbc)
 
 ## Feature liquibase documentation
 
@@ -44,3 +36,11 @@
 ## Feature jdbc-hikari documentation
 
 - [Micronaut Hikari JDBC Connection Pool documentation](https://micronaut-projects.github.io/micronaut-sql/latest/guide/index.html#jdbc)
+
+## Feature validation documentation
+
+- [Micronaut Validation documentation](https://micronaut-projects.github.io/micronaut-validation/latest/guide/)
+
+## Feature security-jwt documentation
+
+- [Micronaut Security JWT documentation](https://micronaut-projects.github.io/micronaut-security/latest/guide/index.html)

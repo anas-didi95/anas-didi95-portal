@@ -1,0 +1,52 @@
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd
+                      http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+  <changeSet id="db.changelog-t_user_250615-1" author="anas">
+    <createTable
+      tableName="T_USER">
+      <!-- Metadata -->
+      <column name="Id" type="UUID">
+        <constraints primaryKey="true" nullable="false" />
+      </column>
+      <column name="IsDel" type="BOOLEAN">
+        <constraints nullable="false" />
+      </column>
+      <column name="Ver" type="INTEGER">
+        <constraints nullable="false" />
+      </column>
+      <column name="CreateBy" type="VARCHAR(20)">
+        <constraints nullable="false" />
+      </column>
+      <column name="CreateDt" type="TIMESTAMP WITH TIME ZONE">
+        <constraints nullable="false" />
+      </column>
+      <column name="UpdateBy" type="VARCHAR(20)">
+        <constraints nullable="false" />
+      </column>
+      <column name="UpdateDt" type="TIMESTAMP WITH TIME ZONE">
+        <constraints nullable="false" />
+      </column>
+      <!-- Metadata -->
+      <column name="UserId" type="VARCHAR(20)">
+        <constraints nullable="false" />
+      </column>
+      <column name="Pwd" type="VARCHAR(100)">
+        <constraints nullable="false" />
+      </column>
+      <column name="Nm" type="VARCHAR(200)">
+        <constraints nullable="false" />
+      </column>
+    </createTable>
+  </changeSet>
+
+  <changeSet id="db.changelog-t_user_250615-2" author="author">
+    <addUniqueConstraint tableName="T_USER" columnNames="UserId" />
+    <createIndex indexName="IX_USER_UserId" tableName="T_USER">
+      <column name="UserId" />
+    </createIndex>
+  </changeSet>
+</databaseChangeLog>
