@@ -1,5 +1,5 @@
 /* (C) Anas Juwaidi Bin Mohd Jeffry. All rights reserved. */
-package com.anasdidi.portal.factory;
+package com.anasdidi.portal.common.factory;
 
 import com.anasdidi.portal.common.CommonConstants;
 import com.anasdidi.portal.module.user.entity.UserEntity;
