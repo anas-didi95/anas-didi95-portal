@@ -20,6 +20,18 @@ Content-Type: application/json
 
 ###
 
+POST {{BASE_URL}}/portal/api/v1/user
+Accept: application/json
+Content-Type: application/json
+
+{
+  "username": "anas",
+  "password": "p@ssw0rd",
+  "name": "Anas Juwaidi Bin Mohd Jeffry"
+}
+
+###
+
 POST {{BASE_URL}}/portal/api/auth/test
 Accept: application/json
 Content-Type: application/json
