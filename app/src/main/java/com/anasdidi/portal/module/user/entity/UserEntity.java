@@ -1,5 +1,5 @@
 /* (C) Anas Juwaidi Bin Mohd Jeffry. All rights reserved. */
-package com.anasdidi.portal.module.user;
+package com.anasdidi.portal.module.user.entity;
 
 import com.anasdidi.portal.module.common.BaseEntity;
 import io.micronaut.serde.annotation.Serdeable;

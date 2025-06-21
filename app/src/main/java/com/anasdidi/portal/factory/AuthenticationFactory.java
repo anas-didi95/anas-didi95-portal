@@ -1,8 +1,12 @@
 /* (C) Anas Juwaidi Bin Mohd Jeffry. All rights reserved. */
 package com.anasdidi.portal.factory;
 
-import com.anasdidi.portal.module.user.UserEntity;
-import com.anasdidi.portal.module.user.UserRepository;
+import com.anasdidi.portal.module.common.CommonConstants;
+import com.anasdidi.portal.module.user.entity.UserEntity;
+import com.anasdidi.portal.module.user.entity.UserTokenEntity;
+import com.anasdidi.portal.module.user.repository.UserRepository;
+import com.anasdidi.portal.module.user.repository.UserTokenRepository;
+import com.nimbusds.jwt.JWTClaimsSet;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.scheduling.TaskExecutors;
 import io.micronaut.security.authentication.AuthenticationException;
@@ -10,8 +14,13 @@ import io.micronaut.security.authentication.AuthenticationFailed;
 import io.micronaut.security.authentication.AuthenticationFailureReason;
 import io.micronaut.security.authentication.AuthenticationResponse;
 import io.micronaut.security.authentication.provider.HttpRequestReactiveAuthenticationProvider;
+import io.micronaut.security.token.jwt.validator.GenericJwtClaimsValidator;
+import io.micronaut.security.token.jwt.validator.JWTClaimsSetUtils;
 import jakarta.inject.Named;
 import jakarta.inject.Singleton;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+import java.time.temporal.ChronoUnit;
 import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 import org.slf4j.Logger;
@@ -22,25 +31,28 @@ import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
 @Factory
-public class AuthenticationFactory {
+class AuthenticationFactory {
 
-  private final Logger log = LoggerFactory.getLogger(AuthenticationFactory.class);
+  private static final Logger log = LoggerFactory.getLogger(AuthenticationFactory.class);
   private final Scheduler scheduler;
   private final UserRepository userRepository;
+  private final UserTokenRepository userTokenRepository;
 
-  public AuthenticationFactory(
+  AuthenticationFactory(
       @Named(TaskExecutors.BLOCKING) ExecutorService executorService,
-      UserRepository userRepository) {
+      UserRepository userRepository,
+      UserTokenRepository userTokenRepository) {
     this.scheduler = Schedulers.fromExecutor(executorService);
     this.userRepository = userRepository;
+    this.userTokenRepository = userTokenRepository;
   }
 
   @Singleton
-  public <A> HttpRequestReactiveAuthenticationProvider<A> authenticationProvider() {
+  <A> HttpRequestReactiveAuthenticationProvider<A> authenticationProvider() {
     return (requestContext, authenticationRequest) ->
         Flux.<AuthenticationResponse>create(
                 emitter -> {
-                  log.trace("[authenticationProvider] Start authentication...");
+                  log.trace("[authenticationProvider] START...");
 
                   String username = authenticationRequest.getIdentity();
                   Optional<UserEntity> result = userRepository.findByUsername(username);
@@ -64,12 +76,66 @@ public class AuthenticationFactory {
                             new AuthenticationFailed(
                                 AuthenticationFailureReason.CREDENTIALS_DO_NOT_MATCH)));
                   } else {
-                    log.debug("[authenticationProvider] User authenticated. {}", username);
+                    log.debug("[authenticationProvider] User authenticated...{}", username);
+
+                    OffsetDateTime effectiveFromDate =
+                        OffsetDateTime.now().truncatedTo(ChronoUnit.SECONDS);
+                    Optional<UserTokenEntity> result2 =
+                        userTokenRepository.findByUserId(userEntity.getId());
+                    result2.ifPresentOrElse(
+                        o -> {
+                          o.setEffectiveFromDate(effectiveFromDate);
+                          userTokenRepository.update(o);
+                        },
+                        () -> {
+                          UserTokenEntity o = new UserTokenEntity();
+                          o.setVersion(0);
+                          o.setIsDeleted(false);
+                          o.setCreateBy(CommonConstants.USER_SYSTEM);
+                          o.setUpdateBy(CommonConstants.USER_SYSTEM);
+                          o.setUserId(userEntity.getId());
+                          o.setEffectiveFromDate(effectiveFromDate);
+                          userTokenRepository.save(o);
+                        });
+
                     emitter.next(AuthenticationResponse.success(userEntity.getUsername()));
                     emitter.complete();
                   }
                 },
                 FluxSink.OverflowStrategy.ERROR)
             .subscribeOn(scheduler);
+  }
+
+  @Singleton
+  <T> GenericJwtClaimsValidator<T> effectiveFromJwtClaimsValidator() {
+    return (claims, request) -> {
+      log.trace("[effectiveFromJwtClaimsValidator] START...");
+
+      JWTClaimsSet jwt = JWTClaimsSetUtils.jwtClaimsSetFromClaims(claims);
+      String username = jwt.getSubject();
+      Optional<UserTokenEntity> result = userTokenRepository.findByUsername(username);
+
+      if (result.isEmpty()) {
+        log.error("[effectiveFromJwtClaimsValidator] User Token Not Found! {}", username);
+        return false;
+      }
+
+      UserTokenEntity token = result.get();
+      OffsetDateTime effectiveFromDate = token.getEffectiveFromDate();
+      OffsetDateTime issueTime = jwt.getIssueTime().toInstant().atOffset(ZoneOffset.UTC);
+      log.debug(
+          "[effectiveFromJwtClaimsValidator] username={}, effectiveFromDate={}, issueTime={}",
+          username,
+          effectiveFromDate,
+          issueTime);
+
+      if (token
+          .getEffectiveFromDate()
+          .isAfter(OffsetDateTime.from(jwt.getIssueTime().toInstant().atOffset(ZoneOffset.UTC)))) {
+        log.error("[effectiveFromJwtClaimsValidator] User Token Ineffective! {}", username);
+        return false;
+      }
+      return true;
+    };
   }
 }

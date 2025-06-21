@@ -1,6 +1,7 @@
 /* (C) Anas Juwaidi Bin Mohd Jeffry. All rights reserved. */
-package com.anasdidi.portal.module.user;
+package com.anasdidi.portal.module.user.repository;
 
+import com.anasdidi.portal.module.user.entity.UserEntity;
 import io.micronaut.data.annotation.Repository;
 import io.micronaut.data.repository.CrudRepository;
 import java.util.Optional;

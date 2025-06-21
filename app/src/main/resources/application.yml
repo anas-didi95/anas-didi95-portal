@@ -68,4 +68,4 @@ jpa:
 
 logger:
   levels:
-    com.anasdidi.portal: DEBUG
+    com.anasdidi.portal: TRACE

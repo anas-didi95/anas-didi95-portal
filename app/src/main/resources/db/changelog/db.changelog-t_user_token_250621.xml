@@ -5,9 +5,9 @@
   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd
                       http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
-  <changeSet id="db.changelog-t_user_250615" author="anas" labels="user">
+  <changeSet id="db.changelog-t_user_token_250621" author="anas" labels="user">
     <createTable
-      tableName="T_USER">
+      tableName="T_USER_TOKEN">
       <!-- Metadata START -->
       <column name="ID" type="UUID">
         <constraints primaryKey="true" nullable="false" />
@@ -31,21 +31,22 @@
         <constraints nullable="false" />
       </column>
       <!-- Metadata END   -->
-      <column name="USERNAME" type="VARCHAR(20)">
+      <column name="USER_ID" type="UUID">
         <constraints nullable="false" />
       </column>
-      <column name="PWD" type="VARCHAR(100)">
-        <constraints nullable="false" />
-      </column>
-      <column name="NM" type="VARCHAR(200)">
+      <column name="EFF_FROM_DT" type="TIMESTAMP WITH TIME ZONE">
         <constraints nullable="false" />
       </column>
     </createTable>
 
-    <addUniqueConstraint tableName="T_USER" columnNames="USERNAME" />
+    <addForeignKeyConstraint
+      baseTableName="T_USER_TOKEN" baseColumnNames="USER_ID"
+      constraintName="FK_USER_TOKEN_USER_ID"
+      referencedTableName="T_USER" referencedColumnNames="ID" />
+    <addUniqueConstraint tableName="T_USER_TOKEN" columnNames="USER_ID" />
 
-    <createIndex indexName="IX_USER_USERNAME" tableName="T_USER">
-      <column name="USERNAME" />
+    <createIndex indexName="IX_USER_TOKEN_USER_ID" tableName="T_USER_TOKEN">
+      <column name="USER_ID" />
     </createIndex>
   </changeSet>
 </databaseChangeLog>

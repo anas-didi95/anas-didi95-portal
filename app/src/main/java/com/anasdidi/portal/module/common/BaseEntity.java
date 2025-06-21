@@ -9,7 +9,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.Version;
-import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
@@ -40,7 +39,7 @@ public abstract class BaseEntity {
 
   @DateUpdated
   @Column(name = "UPDATE_DT")
-  private Instant updateDate;
+  private OffsetDateTime updateDate;
 
   public UUID getId() {
     return id;
@@ -90,11 +89,11 @@ public abstract class BaseEntity {
     this.updateBy = updateBy;
   }
 
-  public Instant getUpdateDate() {
+  public OffsetDateTime getUpdateDate() {
     return updateDate;
   }
 
-  public void setUpdateDate(Instant updateDate) {
+  public void setUpdateDate(OffsetDateTime updateDate) {
     this.updateDate = updateDate;
   }
 }
