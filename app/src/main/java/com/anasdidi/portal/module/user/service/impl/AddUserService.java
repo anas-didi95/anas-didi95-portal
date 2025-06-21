@@ -10,13 +10,14 @@ import io.micronaut.security.utils.SecurityService;
 import io.micronaut.transaction.annotation.Transactional;
 import jakarta.inject.Named;
 import jakarta.inject.Singleton;
+import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @Singleton
 @Named("USER_ADD_USER")
 @Transactional
-class AddUserService implements UserService<AddUserDTO, Void> {
+class AddUserService implements UserService<AddUserDTO, UUID> {
 
   private static final Logger log = LoggerFactory.getLogger(AddUserService.class);
   public final SecurityService securityService;
@@ -28,11 +29,10 @@ class AddUserService implements UserService<AddUserDTO, Void> {
   }
 
   @Override
-  public Void handle(AddUserDTO inDTO) {
+  public UUID handle(AddUserDTO inDTO) {
     log.trace("[handle] START...");
 
     String username = securityService.getAuthentication().map(Authentication::getName).orElse(null);
-
     UserEntity user = new UserEntity();
     user.setIsDeleted(false);
     user.setVersion(0);
@@ -44,6 +44,6 @@ class AddUserService implements UserService<AddUserDTO, Void> {
     userRepository.save(user);
 
     log.info("[handle] User created...{}", user.getUsername());
-    return null;
+    return user.getId();
   }
 }
