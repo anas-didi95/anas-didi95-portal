@@ -8,12 +8,15 @@ import com.anasdidi.portal.module.user.repository.UserRepository;
 import com.anasdidi.portal.module.user.repository.UserTokenRepository;
 import com.nimbusds.jwt.JWTClaimsSet;
 import io.micronaut.context.annotation.Factory;
+import io.micronaut.context.event.ApplicationEventListener;
 import io.micronaut.scheduling.TaskExecutors;
+import io.micronaut.security.authentication.Authentication;
 import io.micronaut.security.authentication.AuthenticationException;
 import io.micronaut.security.authentication.AuthenticationFailed;
 import io.micronaut.security.authentication.AuthenticationFailureReason;
 import io.micronaut.security.authentication.AuthenticationResponse;
 import io.micronaut.security.authentication.provider.HttpRequestReactiveAuthenticationProvider;
+import io.micronaut.security.event.LogoutEvent;
 import io.micronaut.security.token.jwt.validator.GenericJwtClaimsValidator;
 import io.micronaut.security.token.jwt.validator.JWTClaimsSetUtils;
 import jakarta.inject.Named;
@@ -76,8 +79,6 @@ class AuthenticationFactory {
                             new AuthenticationFailed(
                                 AuthenticationFailureReason.CREDENTIALS_DO_NOT_MATCH)));
                   } else {
-                    log.debug("[authenticationProvider] User authenticated...{}", username);
-
                     OffsetDateTime effectiveFromDate =
                         OffsetDateTime.now().truncatedTo(ChronoUnit.SECONDS);
                     Optional<UserTokenEntity> result2 =
@@ -97,6 +98,8 @@ class AuthenticationFactory {
                           o.setEffectiveFromDate(effectiveFromDate);
                           userTokenRepository.save(o);
                         });
+
+                    log.info("[authenticationProvider] User authenticated...{}", username);
 
                     emitter.next(AuthenticationResponse.success(userEntity.getUsername()));
                     emitter.complete();
@@ -136,6 +139,26 @@ class AuthenticationFactory {
         return false;
       }
       return true;
+    };
+  }
+
+  @Singleton
+  ApplicationEventListener<LogoutEvent> logoutEventListener() {
+    return event -> {
+      log.trace("[logoutEventListener] START...");
+
+      Authentication authentication = (Authentication) event.getSource();
+      String username = authentication.getName();
+
+      OffsetDateTime effectiveFromDate = OffsetDateTime.now().truncatedTo(ChronoUnit.SECONDS);
+      Optional<UserTokenEntity> result = userTokenRepository.findByUsername(username);
+      result.ifPresent(
+          o -> {
+            o.setEffectiveFromDate(effectiveFromDate);
+            userTokenRepository.update(o);
+          });
+
+      log.info("[logoutEventListener] User logout...{}", username);
     };
   }
 }
