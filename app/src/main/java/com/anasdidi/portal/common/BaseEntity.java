@@ -1,5 +1,5 @@
 /* (C) Anas Juwaidi Bin Mohd Jeffry. All rights reserved. */
-package com.anasdidi.portal.module.common;
+package com.anasdidi.portal.common;
 
 import io.micronaut.data.annotation.DateCreated;
 import io.micronaut.data.annotation.DateUpdated;
