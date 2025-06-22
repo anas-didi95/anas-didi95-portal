@@ -23,8 +23,7 @@ micronaut:
           secret:
             generator:
               secret: pleaseChangeThisSecretForANewOne
-    redirect:
-      enabled: false
+    redirect.enabled: false
     endpoints:
       login:
         enabled: true
@@ -63,9 +62,10 @@ jpa:
     properties:
       hibernate:
         physical_naming_strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-        hbm2ddl:
-          auto: validate
+        hbm2ddl.auto: validate
 
 logger:
   levels:
     com.anasdidi.portal: TRACE
+
+module.USER.REG_USER.enabled: true

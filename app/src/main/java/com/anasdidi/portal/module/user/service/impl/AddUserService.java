@@ -1,6 +1,7 @@
 /* (C) Anas Juwaidi Bin Mohd Jeffry. All rights reserved. */
 package com.anasdidi.portal.module.user.service.impl;
 
+import com.anasdidi.portal.module.user.UserConstants;
 import com.anasdidi.portal.module.user.dto.AddUserDTO;
 import com.anasdidi.portal.module.user.entity.UserEntity;
 import com.anasdidi.portal.module.user.repository.UserRepository;
@@ -15,7 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @Singleton
-@Named("USER_ADD_USER")
+@Named(UserConstants.EVENT_ADD_USER)
 @Transactional
 class AddUserService implements UserService<AddUserDTO, UUID> {
 
