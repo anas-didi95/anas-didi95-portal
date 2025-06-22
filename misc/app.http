@@ -29,9 +29,3 @@ Content-Type: application/json
   "password": "p@ssw0rd",
   "name": "Anas Juwaidi Bin Mohd Jeffry"
 }
-
-###
-
-POST {{BASE_URL}}/portal/api/auth/test
-Accept: application/json
-Content-Type: application/json
