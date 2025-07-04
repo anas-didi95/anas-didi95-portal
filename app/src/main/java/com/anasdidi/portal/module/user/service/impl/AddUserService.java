@@ -14,6 +14,7 @@ import jakarta.inject.Singleton;
 import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Singleton
 @Named(UserConstants.EVENT_ADD_USER)
@@ -21,26 +22,31 @@ import org.slf4j.LoggerFactory;
 class AddUserService implements UserService<AddUserDTO, UUID> {
 
   private static final Logger log = LoggerFactory.getLogger(AddUserService.class);
-  public final SecurityService securityService;
-  public final UserRepository userRepository;
+  private final SecurityService securityService;
+  private final UserRepository userRepository;
+  private final PasswordEncoder passwordEncoder;
 
-  AddUserService(SecurityService securityService, UserRepository userRepository) {
+  AddUserService(
+      SecurityService securityService,
+      UserRepository userRepository,
+      PasswordEncoder passwordEncoder) {
     this.userRepository = userRepository;
     this.securityService = securityService;
+    this.passwordEncoder = passwordEncoder;
   }
 
   @Override
   public UUID handle(AddUserDTO inDTO) {
     log.trace("[handle] START...");
 
-    String username = securityService.getAuthentication().map(Authentication::getName).orElse(null);
+    String createBy = securityService.getAuthentication().map(Authentication::getName).orElse(null);
     UserEntity user = new UserEntity();
     user.setIsDeleted(false);
     user.setVersion(0);
-    user.setCreateBy(username);
-    user.setUpdateBy(username);
+    user.setCreateBy(createBy);
+    user.setUpdateBy(createBy);
     user.setUsername(inDTO.username());
-    user.setPassword(inDTO.password());
+    user.setPassword(passwordEncoder.encode(inDTO.password()));
     user.setName(inDTO.name());
     userRepository.save(user);
 

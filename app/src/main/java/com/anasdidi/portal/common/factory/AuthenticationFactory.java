@@ -28,6 +28,7 @@ import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
 import reactor.core.scheduler.Scheduler;
@@ -40,14 +41,17 @@ class AuthenticationFactory {
   private final Scheduler scheduler;
   private final UserRepository userRepository;
   private final UserTokenRepository userTokenRepository;
+  private final PasswordEncoder passwordEncoder;
 
   AuthenticationFactory(
       @Named(TaskExecutors.BLOCKING) ExecutorService executorService,
       UserRepository userRepository,
-      UserTokenRepository userTokenRepository) {
+      UserTokenRepository userTokenRepository,
+      PasswordEncoder passwordEncoder) {
     this.scheduler = Schedulers.fromExecutor(executorService);
     this.userRepository = userRepository;
     this.userTokenRepository = userTokenRepository;
+    this.passwordEncoder = passwordEncoder;
   }
 
   @Singleton
@@ -72,7 +76,8 @@ class AuthenticationFactory {
                     emitter.error(
                         new AuthenticationException(
                             new AuthenticationFailed(AuthenticationFailureReason.USER_DISABLED)));
-                  } else if (!userEntity.getPassword().equals(authenticationRequest.getSecret())) {
+                  } else if (!passwordEncoder.matches(
+                      authenticationRequest.getSecret(), userEntity.getPassword())) {
                     log.error("[authenticationProvider] User Password Not Matched! {}", username);
                     emitter.error(
                         new AuthenticationException(

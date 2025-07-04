@@ -48,4 +48,14 @@
       <column name="USERNAME" />
     </createIndex>
   </changeSet>
+
+  <changeSet id="db.changelog-t_user_250615-dev" author="anas" labels="user" context="dev">
+    <sql>
+      <![CDATA[
+        INSERT INTO T_USER(ID, IS_DEL, VER, CREATE_BY, CREATE_DT, UPDATE_BY, UPDATE_DT, USERNAME, PWD, NM)
+        VALUES('44c49fff-edc4-42a4-90d5-449d83d02b6f', false, 0, 'SYSTEM', CURRENT_TIMESTAMP, 'SYSTEM', CURRENT_TIMESTAMP, 'anas.didi95', '$2a$10$a0Jbstzts01SqpViRN3H2OyKMxMo5B4yXkcF6somKgvK1PBAr7r2S', 'Anas Juwaidi Bin Mohd Jeffry');
+      ]]>
+      <comment>Add username[anas.didi95], password[p@ssw0rd]</comment>
+    </sql>
+  </changeSet>
 </databaseChangeLog>

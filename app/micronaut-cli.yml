@@ -24,6 +24,7 @@ features:
     netty-server,
     reactor,
     readme,
+    security,
     security-annotations,
     security-jwt,
     serialization-jackson,
