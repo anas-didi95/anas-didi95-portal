@@ -2,7 +2,6 @@
 package com.anasdidi.portal.common.factory;
 
 import com.anasdidi.portal.common.aspect.TraceContext;
-import com.anasdidi.portal.common.enums.ErrorEnum;
 import com.anasdidi.portal.common.error.BaseError;
 import com.anasdidi.portal.common.error.UnexpectedError;
 import io.micronaut.context.LocalizedMessageSource;
@@ -15,8 +14,6 @@ import io.micronaut.http.MediaType;
 import io.micronaut.http.server.exceptions.ExceptionHandler;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,19 +39,19 @@ class ExceptionHandlerFactory {
 
       HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
       UnexpectedError error = new UnexpectedError(Map.of("message", exception.getMessage()));
-      String message = getMessage(error.error, httpStatus);
-      List<String> errorMessages = prepareErrorMessage(error.error, message);
-      return prepareResponse("unexpectedError", error, message, request, errorMessages, httpStatus);
+      String message = getMessage(error, httpStatus);
+      return prepareResponse("unexpectedError", error, message, request, httpStatus);
     };
   }
 
-  private String getMessage(ErrorEnum error, HttpStatus httpStatus) {
-    return messageSource.getMessageOrDefault(
-        "error." + error.code, httpStatus.getReason(), error.code, traceContext.getTraceId());
-  }
-
-  private List<String> prepareErrorMessage(ErrorEnum error, String message) {
-    return Arrays.asList(error.code, message, traceContext.getTraceId().toString());
+  private String getMessage(BaseError error, HttpStatus httpStatus) {
+    String errorCode = error.error.code;
+    return "[%s] %s Ref[%s]"
+        .formatted(
+            errorCode,
+            messageSource.getMessageOrDefault(
+                "error." + errorCode, httpStatus.getReason(), error.variable),
+            traceContext.getTraceId());
   }
 
   private HttpResponse<?> prepareResponse(
@@ -62,7 +59,6 @@ class ExceptionHandlerFactory {
       BaseError exception,
       String message,
       HttpRequest<?> request,
-      List<String> errorMessages,
       HttpStatus httpStatus) {
     log.debug("[{}] errorCode={}, message={}", logTag, exception.error.code, message);
     log.debug(
