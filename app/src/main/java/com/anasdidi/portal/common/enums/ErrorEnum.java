@@ -2,7 +2,8 @@
 package com.anasdidi.portal.common.enums;
 
 public enum ErrorEnum {
-  E99_UNEXPECTED("E99");
+  E01_VALIDATION_ERR("E01"),
+  E99_UNEXPECTED_ERR("E99");
 
   public final String code;
 

@@ -9,10 +9,13 @@ import io.micronaut.http.HttpResponse;
 import io.micronaut.http.annotation.Body;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Post;
+import io.micronaut.validation.Validated;
+import jakarta.validation.Valid;
 import java.net.URI;
 import java.util.Map;
 import java.util.UUID;
 
+@Validated
 @Controller("/api/v1/user")
 class UserControllerV1 extends UserController {
 
@@ -22,7 +25,7 @@ class UserControllerV1 extends UserController {
 
   @Override
   @Post
-  public HttpResponse<Void> addUser(@Body AddUserDTO reqBody) {
+  public HttpResponse<Void> addUser(@Body @Valid AddUserDTO reqBody) {
     UserService<AddUserDTO, UUID> service = this.prepareService(EventEnum.ADD_USER);
     UUID id = service.handle(reqBody);
     return HttpResponse.created(URI.create("/api/v1/user/" + id.toString()));
