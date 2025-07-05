@@ -15,6 +15,7 @@ liquibase:
   datasources:
     default:
       change-log: "classpath:db/db.changelog-main.xml"
+      contexts: "dev"
       enabled: true
 logger:
   levels:

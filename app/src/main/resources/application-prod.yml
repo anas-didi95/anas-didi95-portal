@@ -4,6 +4,10 @@ datasources:
     password: "${DB_PASSWORD}"
     url: "${DB_URL}"
     username: "${DB_USERNAME}"
+liquibase:
+  datasources:
+    default:
+      contexts: "prod"
 logger:
   levels:
     com.anasdidi.portal: "${LOG_LEVEL}"
