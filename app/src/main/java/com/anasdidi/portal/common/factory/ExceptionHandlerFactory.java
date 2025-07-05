@@ -4,6 +4,7 @@ package com.anasdidi.portal.common.factory;
 import com.anasdidi.portal.common.aspect.TraceContext;
 import com.anasdidi.portal.common.error.BaseError;
 import com.anasdidi.portal.common.error.E01ValidationError;
+import com.anasdidi.portal.common.error.E02RecordAlreadyExistsError;
 import com.anasdidi.portal.common.error.E99UnexpectedError;
 import io.micronaut.context.LocalizedMessageSource;
 import io.micronaut.context.annotation.Factory;
@@ -38,12 +39,20 @@ class ExceptionHandlerFactory {
   @Requires(classes = {ConstraintViolationException.class})
   ExceptionHandler<ConstraintViolationException, HttpResponse<?>> E01ValidationError() {
     return (request, exception) -> {
-      log.error("", exception);
-
       HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
       E01ValidationError error = new E01ValidationError(Map.of("message", exception.getMessage()));
       String message = getMessage(error, httpStatus);
       return prepareResponse("E01ValidationError", error, message, request, httpStatus);
+    };
+  }
+
+  @Singleton
+  @Requires(classes = {E02RecordAlreadyExistsError.class})
+  ExceptionHandler<E02RecordAlreadyExistsError, HttpResponse<?>> E02RecordAlreadyExistsError() {
+    return (request, error) -> {
+      HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
+      String message = getMessage(error, httpStatus);
+      return prepareResponse("E02RecordAlreadyExistsError", error, message, request, httpStatus);
     };
   }
 
@@ -67,7 +76,7 @@ class ExceptionHandlerFactory {
             .formatted(
                 errorCode,
                 messageSource.getMessageOrDefault(
-                    "error." + errorCode, httpStatus.getReason(), error.variable));
+                    "error." + errorCode, httpStatus.getReason(), error.variables));
     return Optional.ofNullable(traceContext.getTraceId())
         .map(s -> message + " Ref[%s]".formatted(s))
         .orElse(message);
@@ -81,10 +90,10 @@ class ExceptionHandlerFactory {
       HttpStatus httpStatus) {
     log.debug("[{}] errorCode={}, message={}", logTag, exception.error.code, message);
     log.debug(
-        "[{}] classMethod={}, variable={}",
+        "[{}] classMethod={}, variables={}",
         logTag,
         traceContext.getClassMethod(),
-        exception.variable);
+        exception.variables);
     log.debug(
         "[{}] controller={}, controllerParam={}",
         logTag,

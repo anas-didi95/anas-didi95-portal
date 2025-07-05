@@ -8,12 +8,12 @@ import java.util.Map;
 public abstract class BaseError extends RuntimeException {
 
   public final ErrorEnum error;
-  public final String variable;
+  public final String[] variables;
 
-  BaseError(ErrorEnum error, String variable) {
+  BaseError(ErrorEnum error, String[] variables) {
     super(error.code);
     this.error = error;
-    this.variable = variable;
+    this.variables = variables;
   }
 
   protected static String parseParamMap(Map<String, Object> paramMap) {

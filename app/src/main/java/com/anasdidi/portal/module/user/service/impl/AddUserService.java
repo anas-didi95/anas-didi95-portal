@@ -2,6 +2,7 @@
 package com.anasdidi.portal.module.user.service.impl;
 
 import com.anasdidi.portal.common.CommonConstants;
+import com.anasdidi.portal.common.error.E02RecordAlreadyExistsError;
 import com.anasdidi.portal.module.user.UserConstants;
 import com.anasdidi.portal.module.user.dto.AddUserDTO;
 import com.anasdidi.portal.module.user.entity.UserEntity;
@@ -45,6 +46,14 @@ class AddUserService implements UserService<AddUserDTO, UUID> {
   @Override
   public UUID handle(AddUserDTO inDTO) {
     log.trace("[handle] START...");
+
+    userRepository
+        .findByUsername(inDTO.username())
+        .ifPresent(
+            o -> {
+              log.error("[handle] Username already exists! {}", o.getUsername());
+              throw new E02RecordAlreadyExistsError("Username");
+            });
 
     String createBy = securityService.getAuthentication().map(Authentication::getName).orElse(null);
     UserEntity user = new UserEntity();
