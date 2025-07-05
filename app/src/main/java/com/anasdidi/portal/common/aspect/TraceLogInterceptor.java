@@ -9,7 +9,6 @@ import io.micronaut.http.annotation.Controller;
 import jakarta.inject.Singleton;
 import java.security.Principal;
 import java.util.Optional;
-import java.util.Set;
 import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +19,6 @@ import org.slf4j.MDC;
 class TraceLogInterceptor implements MethodInterceptor<Object, Object> {
 
   private static final Logger log = LoggerFactory.getLogger(TraceLogInterceptor.class);
-  private static final Set<String> maskSet = Set.of("password");
   private final TraceContext traceContext;
 
   TraceLogInterceptor(TraceContext traceContext) {
@@ -40,8 +38,6 @@ class TraceLogInterceptor implements MethodInterceptor<Object, Object> {
                         o -> {
                           if (o.getValue() == null) {
                             return "%s=null".formatted(o.getKey());
-                          } else if (maskSet.contains(o.getKey().toLowerCase())) {
-                            return "%s=***".formatted(o.getKey());
                           }
                           String value =
                               switch (o.getValue()) {
