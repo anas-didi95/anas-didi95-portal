@@ -1,5 +1,21 @@
+---
+datasources:
+  default:
+    password: "${DB_PASSWORD}"
+    url: "${DB_URL}"
+    username: "${DB_USERNAME}"
+logger:
+  levels:
+    com.anasdidi.portal: "${LOG_LEVEL}"
 micronaut:
   router:
     static-resources:
       web:
-        paths: file:/home/app/dist/
+        paths: "file:/home/app/dist/"
+  security:
+    token:
+      jwt:
+        signatures:
+          secret:
+            generator:
+              secret: "${JWT_SECRET}"

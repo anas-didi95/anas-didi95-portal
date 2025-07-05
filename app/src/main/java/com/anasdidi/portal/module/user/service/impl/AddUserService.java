@@ -1,11 +1,14 @@
 /* (C) Anas Juwaidi Bin Mohd Jeffry. All rights reserved. */
 package com.anasdidi.portal.module.user.service.impl;
 
+import com.anasdidi.portal.common.CommonConstants;
 import com.anasdidi.portal.module.user.UserConstants;
 import com.anasdidi.portal.module.user.dto.AddUserDTO;
 import com.anasdidi.portal.module.user.entity.UserEntity;
 import com.anasdidi.portal.module.user.repository.UserRepository;
 import com.anasdidi.portal.module.user.service.UserService;
+import io.micronaut.context.annotation.Requires;
+import io.micronaut.core.util.StringUtils;
 import io.micronaut.security.authentication.Authentication;
 import io.micronaut.security.utils.SecurityService;
 import io.micronaut.transaction.annotation.Transactional;
@@ -18,6 +21,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Singleton
 @Named(UserConstants.EVENT_ADD_USER)
+@Requires(
+    property =
+        CommonConstants.MODULE_PREFIX + UserConstants.EVENT_ADD_USER + CommonConstants.ENABLED_PROP,
+    value = StringUtils.TRUE)
 @Transactional
 class AddUserService implements UserService<AddUserDTO, UUID> {
 

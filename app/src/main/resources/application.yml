@@ -1,71 +1,67 @@
-micronaut:
-  application:
-    name: portal
-  server:
-    host: 0.0.0.0
-    context-path: /portal
-  router:
-    static-resources:
-      web:
-        enabled: true
-        mapping: /web/**
-        paths: file:/home/vscode/workspace/web/dist/
-  security:
-    enabled: true
-    authentication: cookie
-    token:
-      cookie:
-        enabled: true
-        session-cookie: true
-        cookie-path: ${micronaut.server.context-path}
-      jwt:
-        signatures:
-          secret:
-            generator:
-              secret: pleaseChangeThisSecretForANewOne
-    redirect.enabled: false
-    endpoints:
-      login:
-        enabled: true
-        path: /signIn
-      logout:
-        enabled: true
-        path: /signOut
-    intercept-url-map:
-      - pattern: ${micronaut.router.static-resources.web.mapping}
-        http-method: GET
-        access: isAnonymous()
-      - pattern: ${micronaut.security.endpoints.login.path}
-        http-method: POST
-        access: isAnonymous()
-      - pattern: ${micronaut.security.endpoints.logout.path}
-        http-method: POST
-        access: isAnonymous()
-      - pattern: /api/**
-        http-method: POST
-        access: isAuthenticated()
-
+---
+app.module.USER.ADD_USER.enabled: true
 datasources:
   default:
-    url: jdbc:h2:./h2/portal;AUTO_SERVER=TRUE
-    username: sa
-    password: sa
-
-liquibase:
-  datasources:
-    default:
-      enabled: true
-      change-log: classpath:db/db.changelog-main.xml
-
+    password: "sa"
+    url: "jdbc:h2:./h2/portal;AUTO_SERVER=TRUE"
+    username: "sa"
 jpa:
   default:
     properties:
       hibernate:
-        physical_naming_strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-        hbm2ddl.auto: validate
-
+        hbm2ddl.auto: "validate"
+        physical_naming_strategy: "org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl"
+liquibase:
+  datasources:
+    default:
+      change-log: "classpath:db/db.changelog-main.xml"
+      enabled: true
 logger:
   levels:
-    com.anasdidi.portal: TRACE
-
-module.USER.REG_USER.enabled: true
+    com.anasdidi.portal: "TRACE"
+micronaut:
+  application:
+    name: "portal"
+  router:
+    static-resources:
+      web:
+        enabled: true
+        mapping: "/web/**"
+        paths: "file:/home/vscode/workspace/web/dist/"
+  security:
+    authentication: "cookie"
+    enabled: true
+    endpoints:
+      login:
+        enabled: true
+        path: "/signIn"
+      logout:
+        enabled: true
+        path: "/signOut"
+    intercept-url-map:
+      - pattern: "${micronaut.router.static-resources.web.mapping}"
+        http-method: "GET"
+        access: "isAnonymous()"
+      - pattern: "${micronaut.security.endpoints.login.path}"
+        http-method: "POST"
+        access: "isAnonymous()"
+      - pattern: "${micronaut.security.endpoints.logout.path}"
+        http-method: "POST"
+        access: "isAnonymous()"
+      - pattern: "/api/**"
+        http-method: "POST"
+        access: "isAuthenticated()"
+    redirect.enabled: false
+    token:
+      cookie:
+        cookie-path: "${micronaut.server.context-path}"
+        enabled: true
+        session-cookie: true
+      jwt:
+        signatures:
+          secret:
+            generator:
+              secret: "pleaseChangeThisSecretForANewOne"
+  server:
+    context-path: "/portal"
+    host: "0.0.0.0"
