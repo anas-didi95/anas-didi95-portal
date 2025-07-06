@@ -8,6 +8,7 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { toast } from "react-toastify";
 import type { IErrorResponse } from "./commons/types";
+import { ServiceProvider } from "./contexts/ServiceProvider";
 import { routeTree } from "./routeTree.gen";
 import "./styles/app.css";
 
@@ -53,7 +54,9 @@ declare module "@tanstack/react-router" {
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
+      <ServiceProvider>
+        <RouterProvider router={router} />
+      </ServiceProvider>
     </QueryClientProvider>
   </StrictMode>,
 );

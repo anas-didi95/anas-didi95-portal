@@ -1,4 +1,4 @@
-import { useNavigate } from "@tanstack/react-router";
+import type { AxiosInstance } from "axios";
 import axios, { AxiosError } from "axios";
 import type { IErrorResponse } from "../commons/types";
 
@@ -6,16 +6,19 @@ interface IConf {
   contentType?: "json" | "form";
   useFormData?: boolean;
   timeout?: number;
+  onUnauthorized?: () => void;
 }
 
-export const useAxios = (url: string, conf?: IConf) => {
-  const navigate = useNavigate();
-
+export const createAxiosInstance = (
+  url: string,
+  conf?: IConf,
+): AxiosInstance => {
   const contentType = conf?.contentType ?? "json";
   const useFormData = conf?.useFormData ?? false;
   const timeout = conf?.timeout ?? 15000;
 
   const abortController = new AbortController();
+
   const instance = axios.create({
     signal: abortController.signal,
     baseURL: url,
@@ -24,39 +27,30 @@ export const useAxios = (url: string, conf?: IConf) => {
       "Content-Type": "application/json",
     },
     transformRequest: (reqBody: unknown) => {
-      if (!reqBody) {
-        return reqBody;
-      }
+      if (!reqBody) return reqBody;
 
       if (contentType === "json") {
         return JSON.stringify(reqBody);
       }
 
+      const data: Record<string, unknown> = {};
+      for (const [k, v] of Object.entries(reqBody)) {
+        if (v) data[k] = v;
+      }
+
       if (useFormData) {
         const formData = new FormData();
-        const data: Record<string, unknown> = {};
-        for (const [k, v] of Object.entries(reqBody)) {
-          if (!v) {
-            continue;
-          }
+        for (const [k, v] of Object.entries(data)) {
           if (v instanceof FileList) {
-            for (const vv of v) {
-              formData.append(k, vv);
-            }
+            Array.from(v).forEach((file) => formData.append(k, file));
           } else {
-            data[k] = v;
+            formData.append(k, v as string);
           }
         }
         formData.append("data", JSON.stringify(data));
         return formData;
       } else {
         const params = new URLSearchParams();
-        const data: Record<string, unknown> = {};
-        for (const [k, v] of Object.entries(reqBody)) {
-          if (v) {
-            data[k] = v as unknown;
-          }
-        }
         params.append("data", JSON.stringify(data));
         return params;
       }
@@ -64,16 +58,13 @@ export const useAxios = (url: string, conf?: IConf) => {
   });
 
   let abortTimeout: number;
+
   instance.interceptors.request.use(
     (config) => {
-      abortTimeout = setTimeout(() => abortController.abort(), timeout);
+      abortTimeout = window.setTimeout(() => abortController.abort(), timeout);
       return config;
     },
-    (error) => {
-      const err = error as AxiosError;
-      console.error("Request Error!", err);
-      return Promise.reject(err);
-    },
+    (error) => Promise.reject(error as AxiosError),
   );
 
   instance.interceptors.response.use(
@@ -84,15 +75,18 @@ export const useAxios = (url: string, conf?: IConf) => {
     (error) => {
       clearTimeout(abortTimeout);
       const err = error as AxiosError;
-      console.error("Response Error!", err);
-
       let isRetry = true;
       let message = err.response?.data as string;
-      if (err.status === 401) {
-        void navigate({ to: "/sign-in", replace: true });
+
+      if (err.response?.status === 401) {
+        isRetry = false;
+        message = "Unauthorized!";
+        if (conf?.onUnauthorized) {
+          conf.onUnauthorized();
+        }
       } else if (err.code === "ERR_CANCELED") {
         isRetry = false;
-        message = "Connection Timeout";
+        message = "Connection Timeout!";
       }
 
       const res: IErrorResponse = { isRetry, message };

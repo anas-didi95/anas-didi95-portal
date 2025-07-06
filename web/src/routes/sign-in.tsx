@@ -7,7 +7,7 @@ import ButtonGroup from "../components/ButtonGroup";
 import Card from "../components/Card";
 import Form from "../components/Form";
 import FormInput from "../components/FormInput";
-import { useAuthSignIn } from "../services/auth-service";
+import { useAuthSignIn } from "../hooks/auth/useAuthSignIn";
 
 export const Route = createFileRoute("/sign-in")({
   component: SignInPage,
@@ -26,7 +26,7 @@ function SignInPage() {
     console.log("[handleSignIn] data", data);
     mutate(data, {
       onSuccess: () => {
-        toast.success("Login Success");
+        toast.success("Sign In Success");
         void navigate({ to: "/dashboard" });
       },
     });
