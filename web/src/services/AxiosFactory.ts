@@ -5,7 +5,6 @@ import type { IErrorResponse } from "../commons/types";
 interface IConf {
   contentType?: "json" | "form";
   useFormData?: boolean;
-  timeout?: number;
   onUnauthorized?: () => void;
 }
 
@@ -15,12 +14,8 @@ export const createAxiosInstance = (
 ): AxiosInstance => {
   const contentType = conf?.contentType ?? "json";
   const useFormData = conf?.useFormData ?? false;
-  const timeout = conf?.timeout ?? 15000;
-
-  const abortController = new AbortController();
 
   const instance = axios.create({
-    signal: abortController.signal,
     baseURL: url,
     headers: {
       Accept: "application/json",
@@ -57,26 +52,12 @@ export const createAxiosInstance = (
     },
   });
 
-  let abortTimeout: number;
-
-  instance.interceptors.request.use(
-    (config) => {
-      abortTimeout = window.setTimeout(() => abortController.abort(), timeout);
-      return config;
-    },
-    (error) => Promise.reject(error as AxiosError),
-  );
-
   instance.interceptors.response.use(
-    (response) => {
-      clearTimeout(abortTimeout);
-      return response;
-    },
+    (response) => response,
     (error) => {
-      clearTimeout(abortTimeout);
       const err = error as AxiosError;
       let isRetry = true;
-      let message = err.response?.data as string;
+      let message = getErrorMessage(err);
 
       if (err.response?.status === 401) {
         isRetry = false;
@@ -96,3 +77,9 @@ export const createAxiosInstance = (
 
   return instance;
 };
+
+function getErrorMessage(err: AxiosError): string {
+  if (typeof err.response?.data === "string") return err.response.data;
+  console.error("[getErrorMessage] err.response.data", err.response?.data);
+  return "Unknown Server Error!";
+}
