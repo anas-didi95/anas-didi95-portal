@@ -9,6 +9,7 @@
       <layout class="com.anasdidi.portal.common.aspect.MaskingPatternLayout">
         <pattern>${pattern}</pattern>
         <maskPattern>password=([^,]+)[\s,]</maskPattern>
+        <maskPattern>confirmPassword=([^,]+)[\s,]</maskPattern>
       </layout>
     </encoder>
   </appender>
