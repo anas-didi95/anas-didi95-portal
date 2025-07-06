@@ -5,14 +5,11 @@ services:
       dockerfile: "Dockerfile.publish"
       tags:
         - "portal-app:test"
-    environment:
-      DB_PASSWORD: "sa"
-      DB_URL: "jdbc:h2:./h2/portal;AUTO_SERVER=TRUE"
-      DB_USERNAME: "sa"
-      JWT_SECRET: "e9aeb8a5-5aa3-49e9-8cd0-2ff2fcbed461"
-      LOG_LEVEL: "DEBUG"
-      MICRONAUT_ENVIRONMENTS: "prod"
+    env_file:
+      - ".env"
     logging:
       driver: "local"
     ports:
       - "8081:8080"
+    volumes:
+      - "./h2/:/home/app/h2/:z"
