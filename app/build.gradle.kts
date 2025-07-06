@@ -5,7 +5,7 @@ plugins {
   id("com.diffplug.spotless") version "7.0.2"
 }
 
-version = "0.1"
+version = "v0.1.0"
 
 group = "com.anasdidi.portal"
 
