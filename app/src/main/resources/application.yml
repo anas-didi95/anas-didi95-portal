@@ -53,6 +53,12 @@ micronaut:
       - pattern: "/api/**"
         http-method: "POST"
         access: "isAuthenticated()"
+      - pattern: "/graphql"
+        http-method: "POST"
+        access: "isAnonymous()"
+      - pattern: "/graphiql"
+        http-method: "GET"
+        access: "isAnonymous()"
     redirect.enabled: false
     token:
       cookie:
@@ -67,3 +73,7 @@ micronaut:
   server:
     context-path: "/portal"
     host: "0.0.0.0"
+graphql:
+  enabled: true
+  graphiql:
+    enabled: true

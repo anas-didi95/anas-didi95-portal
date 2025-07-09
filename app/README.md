@@ -44,3 +44,7 @@
 ## Feature security-jwt documentation
 
 - [Micronaut Security JWT documentation](https://micronaut-projects.github.io/micronaut-security/latest/guide/index.html)
+
+## Feature graphql documentation
+
+- [Micronaut GraphQL documentation](https://micronaut-projects.github.io/micronaut-graphql/latest/guide/index.html)

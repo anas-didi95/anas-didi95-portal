@@ -19,6 +19,7 @@ dependencies {
   annotationProcessor("io.micronaut.validation:micronaut-validation-processor")
   implementation("io.micrometer:context-propagation")
   implementation("io.micronaut.data:micronaut-data-hibernate-jpa")
+  implementation("io.micronaut.graphql:micronaut-graphql")
   implementation("io.micronaut.liquibase:micronaut-liquibase")
   implementation("io.micronaut.reactor:micronaut-reactor")
   implementation("io.micronaut.security:micronaut-security")

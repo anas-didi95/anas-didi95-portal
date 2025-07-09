@@ -9,6 +9,7 @@ features:
     data,
     data-jpa,
     gradle,
+    graphql,
     h2,
     http-client-test,
     java,

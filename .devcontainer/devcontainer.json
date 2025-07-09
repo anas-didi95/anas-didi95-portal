@@ -32,7 +32,8 @@
         "redhat.vscode-yaml",
         "richardwillis.vscode-spotless-gradle",
         "humao.rest-client",
-        "chris-rimmer.liquibase-snippets"
+        "chris-rimmer.liquibase-snippets",
+        "GraphQL.vscode-graphql-syntax"
       ]
     }
   }

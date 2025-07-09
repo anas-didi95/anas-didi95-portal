@@ -23,3 +23,6 @@ micronaut:
           secret:
             generator:
               secret: "${JWT_SECRET}"
+graphql:
+  graphiql:
+    enabled: false
