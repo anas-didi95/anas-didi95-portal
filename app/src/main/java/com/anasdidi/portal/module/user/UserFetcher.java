@@ -21,4 +21,12 @@ public class UserFetcher {
   public DataFetcher<List<UserDTO>> getUserList() {
     return env -> userRepository.findAll().stream().map(userMapper::toDTO).toList();
   }
+
+  public DataFetcher<UserDTO> getUser() {
+    return env ->
+        userRepository
+            .findByUsername(env.getArgument("username"))
+            .map(userMapper::toDTO)
+            .orElse(null);
+  }
 }

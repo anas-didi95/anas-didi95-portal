@@ -43,7 +43,8 @@ public class GraphQLFactory {
                 typeWiring ->
                     typeWiring
                         .dataFetcher("hello", helloDataFetcher)
-                        .dataFetcher("users", userFetcher.getUserList()))
+                        .dataFetcher("users", userFetcher.getUserList())
+                        .dataFetcher("user", userFetcher.getUser()))
             .build();
 
     GraphQLSchema graphQLSchema = schemaGenerator.makeExecutableSchema(typeRegistry, runtimeWiring);
