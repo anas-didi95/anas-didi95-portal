@@ -1,7 +1,6 @@
 /* (C) Anas Juwaidi Bin Mohd Jeffry. All rights reserved. */
 package com.anasdidi.portal.common.factory;
 
-import com.anasdidi.portal.HelloDataFetcher;
 import com.anasdidi.portal.module.user.UserFetcher;
 import graphql.GraphQL;
 import graphql.schema.GraphQLSchema;
@@ -25,7 +24,7 @@ public class GraphQLFactory {
   }
 
   @Singleton
-  GraphQL graphQL(ResourceResolver resourceResolver, HelloDataFetcher helloDataFetcher) {
+  GraphQL graphQL(ResourceResolver resourceResolver) {
     SchemaParser schemaParser = new SchemaParser();
     SchemaGenerator schemaGenerator = new SchemaGenerator();
 
@@ -42,7 +41,6 @@ public class GraphQLFactory {
                 "Query",
                 typeWiring ->
                     typeWiring
-                        .dataFetcher("hello", helloDataFetcher)
                         .dataFetcher("users", userFetcher.getUserList())
                         .dataFetcher("user", userFetcher.getUser()))
             .build();
