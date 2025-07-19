@@ -1,18 +1,11 @@
 interface IButton {
   label: string;
-  color: "primary" | "success";
+  color: "primary" | "info" | "link" | "success" | "warning" | "danger";
   type: "button" | "submit" | "reset";
 }
 
 function Button({ label, color, type }: IButton) {
-  let style = "";
-  switch (color) {
-    case "primary":
-      style += " is-primary";
-      break;
-    case "success":
-      style += " is-success";
-  }
+  const style = `is-${color}`;
 
   return (
     <button className={`button ${style}`} type={type}>

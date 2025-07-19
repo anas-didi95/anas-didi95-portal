@@ -1,13 +1,14 @@
+import type { ISignInForm } from "@/commons/types";
+import Button from "@/components/Button";
+import ButtonGroup from "@/components/ButtonGroup";
+import Card from "@/components/Card";
+import Form from "@/components/Form";
+import FormInput from "@/components/FormInput";
+import { useAuthSignIn } from "@/hooks/auth/useAuthSignIn";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
-import type { ISignInForm } from "../commons/types";
-import Button from "../components/Button";
-import ButtonGroup from "../components/ButtonGroup";
-import Card from "../components/Card";
-import Form from "../components/Form";
-import FormInput from "../components/FormInput";
-import { useAuthSignIn } from "../hooks/auth/useAuthSignIn";
+import usePrefersColorScheme from "use-prefers-color-scheme";
 
 export const Route = createFileRoute("/sign-in")({
   component: SignInPage,
@@ -32,8 +33,15 @@ function SignInPage() {
     });
   };
 
+  const colorScheme = usePrefersColorScheme();
+
   return (
-    <main>
+    <main
+      className={
+        colorScheme === "dark"
+          ? `has-background-black-ter`
+          : "has-background-white-ter"
+      }>
       <section className="hero is-fullheight">
         <div className="hero-body">
           <div className="columns container">
@@ -58,7 +66,12 @@ function SignInPage() {
                   />
                   <br />
                   <ButtonGroup align="right">
+                    <Button color="primary" type="submit" label="Sign In" />
+                    <Button color="info" type="submit" label="Sign In" />
+                    <Button color="link" type="submit" label="Sign In" />
                     <Button color="success" type="submit" label="Sign In" />
+                    <Button color="warning" type="submit" label="Sign In" />
+                    <Button color="danger" type="submit" label="Sign In" />
                   </ButtonGroup>
                 </Form>
               </Card>

@@ -7,10 +7,10 @@ interface ICard {
 
 function Card({ children, label }: ICard) {
   return (
-    <div className="card ">
+    <div className="card">
       {!!label && (
-        <div className="card-header">
-          <p className="card-header-title">{label}</p>
+        <div className="card-header has-background-info">
+          <p className="card-header-title has-text-white">{label}</p>
         </div>
       )}
       <div className="card-content">{children}</div>
