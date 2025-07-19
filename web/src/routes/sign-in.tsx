@@ -19,7 +19,6 @@ function SignInPage() {
   const { mutate } = useAuthSignIn();
 
   const handleSignIn = (data: ISignInForm) => {
-    console.log("[handleSignIn] data", data);
     mutate(data, {
       onSuccess: () => {
         toast.success("Sign In Success");
@@ -52,11 +51,6 @@ function SignInPage() {
                 <br />
                 <ButtonGroup align="right">
                   <Button color="primary" type="submit" label="Sign In" />
-                  <Button color="info" type="submit" label="Sign In" />
-                  <Button color="link" type="submit" label="Sign In" />
-                  <Button color="success" type="submit" label="Sign In" />
-                  <Button color="warning" type="submit" label="Sign In" />
-                  <Button color="danger" type="submit" label="Sign In" />
                 </ButtonGroup>
               </Form>
             </Card>

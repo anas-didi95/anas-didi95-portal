@@ -15,11 +15,18 @@ export const createAxiosInstance = (
   const contentType = conf?.contentType ?? "json";
   const useFormData = conf?.useFormData ?? false;
 
+  const headerContentType =
+    contentType === "json"
+      ? "application/json"
+      : useFormData
+        ? "multipart/form-data"
+        : "application/x-www-form-urlencoded";
+
   const instance = axios.create({
     baseURL: url,
     headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
+      Accept: "application/json, text/plain",
+      "Content-Type": headerContentType,
     },
     transformRequest: (reqBody: unknown) => {
       if (!reqBody) return reqBody;
