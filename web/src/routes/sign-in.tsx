@@ -8,18 +8,13 @@ import { useAuthSignIn } from "@/hooks/auth/useAuthSignIn";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
-import usePrefersColorScheme from "use-prefers-color-scheme";
 
 export const Route = createFileRoute("/sign-in")({
   component: SignInPage,
 });
 
 function SignInPage() {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<ISignInForm>();
+  const { handleSubmit, control } = useForm<ISignInForm>();
   const navigate = useNavigate();
   const { mutate } = useAuthSignIn();
 
@@ -33,52 +28,41 @@ function SignInPage() {
     });
   };
 
-  const colorScheme = usePrefersColorScheme();
-
   return (
-    <main
-      className={
-        colorScheme === "dark"
-          ? `has-background-black-ter`
-          : "has-background-white-ter"
-      }>
-      <section className="hero is-fullheight">
-        <div className="hero-body">
-          <div className="columns container">
-            <div className="column is-6 is-offset-3">
-              <Card label="Sign In">
-                <Form onSubmit={handleSubmit(handleSignIn)}>
-                  <FormInput
-                    label="Username"
-                    type="text"
-                    register={register}
-                    errors={errors}
-                    name="username"
-                    rule={{ required: true }}
-                  />
-                  <FormInput
-                    label="Password"
-                    type="password"
-                    register={register}
-                    errors={errors}
-                    name="password"
-                    rule={{ required: true }}
-                  />
-                  <br />
-                  <ButtonGroup align="right">
-                    <Button color="primary" type="submit" label="Sign In" />
-                    <Button color="info" type="submit" label="Sign In" />
-                    <Button color="link" type="submit" label="Sign In" />
-                    <Button color="success" type="submit" label="Sign In" />
-                    <Button color="warning" type="submit" label="Sign In" />
-                    <Button color="danger" type="submit" label="Sign In" />
-                  </ButtonGroup>
-                </Form>
-              </Card>
-            </div>
+    <section className="hero is-fullheight">
+      <div className="hero-body">
+        <div className="columns container">
+          <div className="column is-6 is-offset-3">
+            <Card label="Sign In">
+              <Form onSubmit={handleSubmit(handleSignIn)}>
+                <FormInput
+                  label="Username"
+                  type="text"
+                  name="username"
+                  control={control}
+                  rule={{ required: true }}
+                />
+                <FormInput
+                  label="Password"
+                  type="password"
+                  name="password"
+                  control={control}
+                  rule={{ required: true }}
+                />
+                <br />
+                <ButtonGroup align="right">
+                  <Button color="primary" type="submit" label="Sign In" />
+                  <Button color="info" type="submit" label="Sign In" />
+                  <Button color="link" type="submit" label="Sign In" />
+                  <Button color="success" type="submit" label="Sign In" />
+                  <Button color="warning" type="submit" label="Sign In" />
+                  <Button color="danger" type="submit" label="Sign In" />
+                </ButtonGroup>
+              </Form>
+            </Card>
           </div>
         </div>
-      </section>
-    </main>
+      </div>
+    </section>
   );
 }

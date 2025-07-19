@@ -21561,4 +21561,8 @@ has-background-danger.is-hoverable:active {
   pointer-events: all !important;
 }
 
+main {
+  height: 100vh;
+}
+
 /*# sourceMappingURL=app.css.map */

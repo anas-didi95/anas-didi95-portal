@@ -3,12 +3,13 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { createRootRouteWithContext, Outlet } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 import { Bounce, ToastContainer } from "react-toastify";
+import usePrefersColorScheme from "use-prefers-color-scheme";
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   {
     component: () => (
       <>
-        <Outlet />
+        <AppLayout />
         <TanStackRouterDevtools position="bottom-left" />
         <ReactQueryDevtools position="right" />
         <ToastContainer
@@ -28,3 +29,18 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     ),
   },
 );
+
+function AppLayout() {
+  const colorScheme = usePrefersColorScheme();
+
+  return (
+    <main
+      className={
+        colorScheme === "dark"
+          ? `has-background-black-ter`
+          : "has-background-white-ter"
+      }>
+      <Outlet />
+    </main>
+  );
+}

@@ -1,6 +1,8 @@
+import type { TColor } from "@/commons/types";
+
 interface IButton {
   label: string;
-  color: "primary" | "info" | "link" | "success" | "warning" | "danger";
+  color: TColor;
   type: "button" | "submit" | "reset";
 }
 

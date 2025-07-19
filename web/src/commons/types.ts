@@ -1,4 +1,12 @@
 // Type
+export type TColor =
+  | "primary"
+  | "info"
+  | "link"
+  | "success"
+  | "warning"
+  | "danger";
+export type TAlignment = "left" | "centered" | "justified" | "right";
 
 // Interface
 export interface IErrorResponse {
