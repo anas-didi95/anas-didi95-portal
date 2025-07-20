@@ -1,6 +1,6 @@
+import { withAbort } from "@/commons/hoc/withAbort";
+import { useAuthService } from "@/contexts/ServiceContext";
 import { useMutation } from "@tanstack/react-query";
-import { withAbort } from "../../commons/hoc/withAbort";
-import { useAuthService } from "../../contexts/ServiceContext";
 
 const useAuthSignOut = () => {
   const authService = useAuthService();

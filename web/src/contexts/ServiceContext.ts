@@ -1,5 +1,5 @@
+import type { AuthService } from "@/services/AuthService";
 import { createContext, useContext } from "react";
-import { AuthService } from "../services/AuthService";
 
 export const ServiceContext = createContext<{
   authService: AuthService;

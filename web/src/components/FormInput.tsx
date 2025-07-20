@@ -1,5 +1,5 @@
+import { ValidatorMessage } from "@/commons/utils";
 import { Controller, type Control } from "react-hook-form";
-import { ValidatorMessage } from "../commons/utils";
 
 interface IFormInput {
   name: string;

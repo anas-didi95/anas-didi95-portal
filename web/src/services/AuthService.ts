@@ -1,5 +1,5 @@
+import type { ISignInForm, ITokenInfo } from "@/commons/types";
 import type { AxiosInstance } from "axios";
-import type { ISignInForm, ITokenInfo } from "../commons/types";
 
 export interface IAuthService {
   signIn(data: ISignInForm, signal: AbortSignal): Promise<unknown>;

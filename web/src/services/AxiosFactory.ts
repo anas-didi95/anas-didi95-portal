@@ -1,6 +1,6 @@
+import type { IErrorResponse } from "@/commons/types";
 import type { AxiosInstance } from "axios";
 import axios, { AxiosError } from "axios";
-import type { IErrorResponse } from "../commons/types";
 
 interface IConf {
   contentType?: "json" | "form";

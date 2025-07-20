@@ -18,7 +18,7 @@ public interface UserTokenRepository extends CrudRepository<UserTokenEntity, UUI
           """
           SELECT a.*
           FROM T_USER_TOKEN a
-          JOIN T_USER b ON b.ID = a.USER_ID
+          INNER JOIN T_USER b ON b.ID = a.USER_ID
           WHERE b.USERNAME = :username
           """,
       nativeQuery = true)
