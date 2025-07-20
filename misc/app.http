@@ -1,0 +1,37 @@
+# DEV
+@BASE_URL=http://localhost:8080
+
+###
+
+POST {{BASE_URL}}/portal/signIn
+Accept: application/json
+Content-Type: application/json
+
+{
+  "username": "anas.didi95",
+  "password": "p@ssw0rd"
+}
+
+###
+
+POST {{BASE_URL}}/portal/signOut
+Accept: application/json
+Content-Type: application/json
+
+###
+
+GET {{BASE_URL}}/portal/tokenInfo
+Accept: application/json
+Content-Type: application/json
+
+###
+
+POST {{BASE_URL}}/portal/api/v1/user
+Accept: application/json
+Content-Type: application/json
+
+{
+  "username": "anas",
+  "password": "p@ssw0rd",
+  "name": "Anas Juwaidi Bin Mohd Jeffry"
+}

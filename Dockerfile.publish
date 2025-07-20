@@ -1,9 +1,36 @@
-FROM eclipse-temurin:21-alpine
+FROM ghcr.io/graalvm/native-image-community:21-ol9 AS graalvm
+WORKDIR /home/app
+COPY --link app/build/docker/native-main/layers/libs /home/app/libs
+COPY --link app/build/docker/native-main/layers/app /home/app/
+COPY --link app/build/docker/native-main/layers/resources /home/app/resources
+RUN mkdir /home/app/config-dirs
+RUN mkdir -p /home/app/config-dirs/generateResourcesConfigFile
+RUN mkdir -p /home/app/config-dirs/org.hibernate.orm/hibernate-core/6.6.0.Final
+RUN mkdir -p /home/app/config-dirs/org.jboss.logging/jboss-logging/3.5.0.Final
+RUN mkdir -p /home/app/config-dirs/org.glassfish.jaxb/jaxb-runtime/3.0.2
+RUN mkdir -p /home/app/config-dirs/io.netty/netty-common/4.1.115.Final
+RUN mkdir -p /home/app/config-dirs/io.netty/netty-transport/4.1.115.Final
+RUN mkdir -p /home/app/config-dirs/com.graphql-java/graphql-java/19.2
+RUN mkdir -p /home/app/config-dirs/org.liquibase/liquibase-core/4.23.0
+RUN mkdir -p /home/app/config-dirs/com.zaxxer/HikariCP/5.0.1
+RUN mkdir -p /home/app/config-dirs/ch.qos.logback/logback-classic/1.4.9
+RUN mkdir -p /home/app/config-dirs/com.h2database/h2/2.1.210
+COPY --link app/build/docker/native-main/config-dirs/generateResourcesConfigFile /home/app/config-dirs/generateResourcesConfigFile
+COPY --link app/build/docker/native-main/config-dirs/org.hibernate.orm/hibernate-core/6.6.0.Final /home/app/config-dirs/org.hibernate.orm/hibernate-core/6.6.0.Final
+COPY --link app/build/docker/native-main/config-dirs/org.jboss.logging/jboss-logging/3.5.0.Final /home/app/config-dirs/org.jboss.logging/jboss-logging/3.5.0.Final
+COPY --link app/build/docker/native-main/config-dirs/org.glassfish.jaxb/jaxb-runtime/3.0.2 /home/app/config-dirs/org.glassfish.jaxb/jaxb-runtime/3.0.2
+COPY --link app/build/docker/native-main/config-dirs/io.netty/netty-common/4.1.115.Final /home/app/config-dirs/io.netty/netty-common/4.1.115.Final
+COPY --link app/build/docker/native-main/config-dirs/io.netty/netty-transport/4.1.115.Final /home/app/config-dirs/io.netty/netty-transport/4.1.115.Final
+COPY --link app/build/docker/native-main/config-dirs/com.graphql-java/graphql-java/19.2 /home/app/config-dirs/com.graphql-java/graphql-java/19.2
+COPY --link app/build/docker/native-main/config-dirs/org.liquibase/liquibase-core/4.23.0 /home/app/config-dirs/org.liquibase/liquibase-core/4.23.0
+COPY --link app/build/docker/native-main/config-dirs/com.zaxxer/HikariCP/5.0.1 /home/app/config-dirs/com.zaxxer/HikariCP/5.0.1
+COPY --link app/build/docker/native-main/config-dirs/ch.qos.logback/logback-classic/1.4.9 /home/app/config-dirs/ch.qos.logback/logback-classic/1.4.9
+COPY --link app/build/docker/native-main/config-dirs/com.h2database/h2/2.1.210 /home/app/config-dirs/com.h2database/h2/2.1.210
+RUN native-image --exclude-config .*/libs/netty-codec-http-4.1.118.Final.jar ^/META-INF/native-image/.* --exclude-config .*/libs/netty-handler-4.1.118.Final.jar ^/META-INF/native-image/.* --exclude-config .*/libs/netty-common-4.1.118.Final.jar ^/META-INF/native-image/.* --exclude-config .*/libs/netty-buffer-4.1.118.Final.jar ^/META-INF/native-image/.* --exclude-config .*/libs/netty-transport-4.1.118.Final.jar ^/META-INF/native-image/.* --exclude-config .*/libs/netty-codec-http2-4.1.118.Final.jar ^/META-INF/native-image/.* -cp /home/app/libs/*.jar:/home/app/resources:/home/app/application.jar --no-fallback -o application -H:ConfigurationFileDirectories=/home/app/config-dirs/generateResourcesConfigFile,/home/app/config-dirs/org.hibernate.orm/hibernate-core/6.6.0.Final,/home/app/config-dirs/org.jboss.logging/jboss-logging/3.5.0.Final,/home/app/config-dirs/org.glassfish.jaxb/jaxb-runtime/3.0.2,/home/app/config-dirs/io.netty/netty-codec-http/4.1.80.Final,/home/app/config-dirs/io.netty/netty-common/4.1.115.Final,/home/app/config-dirs/io.netty/netty-buffer/4.1.80.Final,/home/app/config-dirs/io.netty/netty-transport/4.1.115.Final,/home/app/config-dirs/io.netty/netty-handler/4.1.80.Final,/home/app/config-dirs/io.netty/netty-codec-http2/4.1.80.Final,/home/app/config-dirs/com.graphql-java/graphql-java/19.2,/home/app/config-dirs/org.liquibase/liquibase-core/4.23.0,/home/app/config-dirs/com.zaxxer/HikariCP/5.0.1,/home/app/config-dirs/ch.qos.logback/logback-classic/1.4.9,/home/app/config-dirs/com.h2database/h2/2.1.210 com.anasdidi.portal.Application
+
+FROM cgr.dev/chainguard/wolfi-base:latest
 WORKDIR /home/app/
-COPY --link app/build/docker/main/layers/libs/ /home/app/libs/
-COPY --link app/build/docker/main/layers/app/ /home/app/
-COPY --link app/build/docker/main/layers/resources/ /home/app/resources/
+COPY --link --from=graalvm /home/app/application /home/app/application
 COPY --link web/dist/ /home/app/dist/
 EXPOSE 8080
-ENTRYPOINT ["sh", "-c"]
-CMD ["java -jar -Dmicronaut.environments=prod /home/app/application.jar"]
+ENTRYPOINT ["/home/app/application"]

@@ -1,0 +1,15 @@
+---
+services:
+  app-publish:
+    build:
+      dockerfile: "Dockerfile.publish"
+      tags:
+        - "portal-app:test"
+    env_file:
+      - ".env"
+    logging:
+      driver: "local"
+    ports:
+      - "8081:8080"
+    volumes:
+      - "./h2/:/home/app/h2/:z"

@@ -1,11 +1,85 @@
+---
+app.module.USER.ADD_USER.enabled: true
+datasources:
+  default:
+    password: "sa"
+    url: "jdbc:h2:./h2/portal;AUTO_SERVER=TRUE"
+    username: "sa"
+graphql:
+  enabled: true
+  graphiql:
+    enabled: true
+jpa:
+  default:
+    compile-time-hibernate-proxies: true
+    properties:
+      hibernate:
+        hbm2ddl.auto: "validate"
+        physical_naming_strategy: "org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl"
+liquibase:
+  datasources:
+    default:
+      change-log: "classpath:db/db.changelog-main.xml"
+      contexts: "dev"
+      enabled: true
+logger:
+  levels:
+    com.anasdidi.portal: "TRACE"
 micronaut:
   application:
-    name: portal
-  server:
-    host: 0.0.0.0
+    name: "portal"
   router:
     static-resources:
-      portalweb:
+      web:
         enabled: true
-        mapping: /portalweb/**
-        paths: file:/home/vscode/workspace/web/dist/
+        mapping: "/web/**"
+        paths: "file:/home/vscode/workspace/web/dist/"
+  security:
+    authentication: "cookie"
+    enabled: true
+    endpoints:
+      introspection:
+        enabled: true
+        path: "/tokenInfo"
+      login:
+        enabled: true
+        path: "/signIn"
+      logout:
+        enabled: true
+        path: "/signOut"
+    intercept-url-map:
+      - pattern: "${micronaut.router.static-resources.web.mapping}"
+        http-method: "GET"
+        access: "isAnonymous()"
+      - pattern: "${micronaut.security.endpoints.login.path}"
+        http-method: "POST"
+        access: "isAnonymous()"
+      - pattern: "${micronaut.security.endpoints.logout.path}"
+        http-method: "POST"
+        access: "isAnonymous()"
+      - pattern: "/api/**"
+        http-method: "POST"
+        access: "isAuthenticated()"
+      - pattern: "/graphql"
+        http-method: "POST"
+        access: "isAuthenticated()"
+      - pattern: "/graphiql"
+        http-method: "GET"
+        access: "isAuthenticated()"
+    redirect.enabled: false
+    token:
+      cookie:
+        cookie-http-only: true
+        cookie-path: "${micronaut.server.context-path}"
+        cookie-same-site: "Strict"
+        cookie-secure: false
+        enabled: true
+        session-cookie: true
+      jwt:
+        signatures:
+          secret:
+            generator:
+              secret: "pleaseChangeThisSecretForANewOne"
+  server:
+    context-path: "/portal"
+    host: "0.0.0.0"

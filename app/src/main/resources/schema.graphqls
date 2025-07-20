@@ -1,0 +1,17 @@
+type Query {
+  hello(name: String): String!
+  users: [User]!
+  user(username: String!): User
+}
+
+type User {
+  id: String!
+  isDeleted: Boolean!
+  version: Int!
+  createBy: String!
+  createDate: String!
+  updateBy: String!
+  updateDate: String!
+  username: String!
+  name: String!
+}

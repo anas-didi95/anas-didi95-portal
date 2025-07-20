@@ -1,1 +1,1 @@
-https://micronaut.io/launch?type=DEFAULT&name=portal&package=com.anasdidi.portal&javaVersion=JDK_21&lang=JAVA&build=GRADLE_KOTLIN&test=JUNIT&features=yaml&version=4.8.2
+https://micronaut.io/launch?type=DEFAULT&name=portal&package=com.anasdidi.portal&javaVersion=JDK_21&lang=JAVA&build=GRADLE_KOTLIN&test=JUNIT&features=yaml&features=reactor&features=h2&features=liquibase&features=validation&features=data-jpa&features=security-jwt&features=security&features=graphql&version=4.9.0
