@@ -58,10 +58,10 @@ micronaut:
         access: "isAuthenticated()"
       - pattern: "/graphql"
         http-method: "POST"
-        access: "isAnonymous()"
+        access: "isAuthenticated()"
       - pattern: "/graphiql"
         http-method: "GET"
-        access: "isAnonymous()"
+        access: "isAuthenticated()"
     redirect.enabled: false
     token:
       cookie:
