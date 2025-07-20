@@ -24,6 +24,8 @@ import jakarta.inject.Singleton;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
+import java.util.Collections;
+import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 import org.slf4j.Logger;
@@ -106,7 +108,11 @@ class AuthenticationFactory {
 
                     log.info("[authenticationProvider] User authenticated...{}", username);
 
-                    emitter.next(AuthenticationResponse.success(userEntity.getUsername()));
+                    emitter.next(
+                        AuthenticationResponse.success(
+                            userEntity.getUsername(),
+                            Collections.emptyList(),
+                            Map.of("_user", Map.of("name", userEntity.getName()))));
                     emitter.complete();
                   }
                 },

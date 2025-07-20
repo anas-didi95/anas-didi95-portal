@@ -40,6 +40,9 @@ micronaut:
       logout:
         enabled: true
         path: "/signOut"
+      introspection:
+        enabled: true
+        path: "/tokenInfo"
     intercept-url-map:
       - pattern: "${micronaut.router.static-resources.web.mapping}"
         http-method: "GET"
