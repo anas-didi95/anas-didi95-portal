@@ -1,5 +1,6 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
+  Navigate,
   RouterProvider,
   createHashHistory,
   createRouter,
@@ -44,6 +45,7 @@ const router = createRouter({
   context: {
     queryClient,
   },
+  defaultNotFoundComponent: () => <Navigate to="/sign-in" replace={true} />,
 });
 declare module "@tanstack/react-router" {
   interface Register {
