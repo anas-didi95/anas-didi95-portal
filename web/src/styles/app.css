@@ -21565,4 +21565,9 @@ main {
   height: 100vh;
 }
 
+.skeleton-center {
+  position: relative;
+  top: 50%;
+}
+
 /*# sourceMappingURL=app.css.map */
