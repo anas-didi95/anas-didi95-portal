@@ -18,14 +18,14 @@ function SignInPage() {
   const navigate = useNavigate();
   const { mutate } = useAuthSignIn();
 
-  const handleSignIn = (data: ISignInForm) => {
+  const handleSignIn = handleSubmit((data) => {
     mutate(data, {
       onSuccess: () => {
         toast.success("Sign In Success");
         void navigate({ to: "/dashboard" });
       },
     });
-  };
+  });
 
   return (
     <section className="hero is-fullheight">
@@ -33,7 +33,7 @@ function SignInPage() {
         <div className="columns container">
           <div className="column is-6 is-offset-3">
             <Card label="Sign In">
-              <Form onSubmit={handleSubmit(handleSignIn)}>
+              <Form onSubmit={handleSignIn}>
                 <FormInput
                   label="Username"
                   type="text"

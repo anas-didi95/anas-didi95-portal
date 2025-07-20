@@ -1,8 +1,9 @@
 import type { AxiosInstance } from "axios";
-import type { ISignInForm } from "../commons/types";
+import type { ISignInForm, ITokenInfo } from "../commons/types";
 
 export interface IAuthService {
   signIn(data: ISignInForm, signal: AbortSignal): Promise<unknown>;
+  tokenInfo(signal: AbortSignal): Promise<ITokenInfo>;
 }
 
 export class AuthService implements IAuthService {
@@ -13,7 +14,12 @@ export class AuthService implements IAuthService {
   }
 
   async signIn(data: ISignInForm, signal: AbortSignal): Promise<unknown> {
-    const res = await this.axios.post("", data, { signal });
+    const res = await this.axios.post("/signIn", data, { signal });
+    return res.data;
+  }
+
+  async tokenInfo(signal: AbortSignal): Promise<ITokenInfo> {
+    const res = await this.axios.get<ITokenInfo>("/tokenInfo", { signal });
     return res.data;
   }
 }

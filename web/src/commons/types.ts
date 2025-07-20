@@ -18,3 +18,9 @@ export interface ISignInForm {
   username: string;
   password: string;
 }
+
+export interface ITokenInfo {
+  _user: {
+    name: string;
+  };
+}
