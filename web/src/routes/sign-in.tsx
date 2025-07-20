@@ -4,7 +4,7 @@ import ButtonGroup from "@/components/ButtonGroup";
 import Card from "@/components/Card";
 import Form from "@/components/Form";
 import FormInput from "@/components/FormInput";
-import { useAuthSignIn } from "@/hooks/auth/useAuthSignIn";
+import useAuthSignIn from "@/hooks/auth/useAuthSignIn";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";

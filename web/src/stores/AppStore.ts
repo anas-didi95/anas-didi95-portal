@@ -7,6 +7,7 @@ interface IState {
 
 interface IAction {
   action: {
+    reset: () => void;
     setUsername: (username: string) => void;
     setBreadcrumb: (breadcrumb: string[]) => void;
   };
@@ -20,6 +21,7 @@ const initialState: IState = {
 const useAppStore = create<IState & IAction>((set) => ({
   ...initialState,
   action: {
+    reset: () => set(initialState),
     setUsername: (username) => set({ username }),
     setBreadcrumb: (breadcrumb) => set({ breadcrumb }),
   },

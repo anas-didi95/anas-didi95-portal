@@ -1,13 +1,27 @@
 import brandImg from "@/assets/brand.png";
+import useAuthSignOut from "@/hooks/auth/useAuthSignOut";
 import useAppStore from "@/stores/AppStore";
+import { useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { FaUserTie } from "react-icons/fa6";
+import { toast } from "react-toastify";
 
 function Navbar() {
   const [isActive, setActive] = useState(false);
   const username = useAppStore((store) => store.username);
+  const reset = useAppStore((store) => store.action.reset);
+  const { mutate } = useAuthSignOut();
+  const navigate = useNavigate();
 
   const handleActive = () => setActive((prev) => !prev);
+  const handleSignOut = () =>
+    mutate(undefined, {
+      onSuccess: () => {
+        reset();
+        toast.success("Sign Out Success");
+        void navigate({ to: "/sign-in", replace: true });
+      },
+    });
 
   return (
     <nav
@@ -47,7 +61,9 @@ function Navbar() {
             </a>
             <div className="navbar-dropdown">
               <span className="navbar-item">
-                <button className="button is-danger is-fullwidth">
+                <button
+                  className="button is-danger is-fullwidth"
+                  onClick={handleSignOut}>
                   Sign Out
                 </button>
               </span>

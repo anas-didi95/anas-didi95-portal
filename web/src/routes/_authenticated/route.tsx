@@ -1,5 +1,5 @@
 import Navbar from "@/components/Navbar";
-import { useAuthTokenInfo } from "@/hooks/auth/useAuthSignIn";
+import useAuthTokenInfo from "@/hooks/auth/useAuthTokenInfo";
 import useAppStore from "@/stores/AppStore";
 import { createFileRoute, Outlet } from "@tanstack/react-router";
 

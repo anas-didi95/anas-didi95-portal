@@ -4,6 +4,7 @@ import type { ISignInForm, ITokenInfo } from "../commons/types";
 export interface IAuthService {
   signIn(data: ISignInForm, signal: AbortSignal): Promise<unknown>;
   tokenInfo(signal: AbortSignal): Promise<ITokenInfo>;
+  signOut(signal: AbortSignal): Promise<unknown>;
 }
 
 export class AuthService implements IAuthService {
@@ -20,6 +21,11 @@ export class AuthService implements IAuthService {
 
   async tokenInfo(signal: AbortSignal): Promise<ITokenInfo> {
     const res = await this.axios.get<ITokenInfo>("/tokenInfo", { signal });
+    return res.data;
+  }
+
+  async signOut(signal: AbortSignal): Promise<unknown> {
+    const res = await this.axios.post("/signOut", null, { signal });
     return res.data;
   }
 }
