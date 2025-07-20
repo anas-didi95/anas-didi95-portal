@@ -8,9 +8,20 @@ export const Route = createFileRoute("/_authenticated")({
 });
 
 function AuthenticatedLayout() {
-  const { data: tokenInfo, isSuccess } = useAuthTokenInfo();
+  const {
+    data: tokenInfo,
+    isSuccess,
+    isFetching,
+    isError,
+  } = useAuthTokenInfo();
   const setUsername = useAppStore((store) => store.action.setUsername);
+  const reset = useAppStore((store) => store.action.reset);
   const navigate = useNavigate();
+
+  if (!isFetching && isError) {
+    reset();
+    void navigate({ to: "/sign-in", replace: true });
+  }
 
   if (isSuccess) {
     setUsername(tokenInfo._user.name);
@@ -21,8 +32,10 @@ function AuthenticatedLayout() {
       </>
     );
   } else {
-    void navigate({ to: "/sign-in", replace: true });
+    return <Skeleton />;
   }
+}
 
+function Skeleton() {
   return <div className="skeleton-block skeleton-center"></div>;
 }

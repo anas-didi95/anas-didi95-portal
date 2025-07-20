@@ -16,7 +16,7 @@ export const Route = createFileRoute("/sign-in")({
 function SignInPage() {
   const { handleSubmit, control } = useForm<ISignInForm>();
   const navigate = useNavigate();
-  const { mutate } = useAuthSignIn();
+  const { mutate, isPending } = useAuthSignIn();
 
   const handleSignIn = handleSubmit((data) => {
     mutate(data, {
@@ -33,7 +33,7 @@ function SignInPage() {
         <div className="columns container">
           <div className="column is-6 is-offset-3">
             <Card label="Sign In">
-              <Form onSubmit={handleSignIn}>
+              <Form onSubmit={handleSignIn} isPending={isPending}>
                 <FormInput
                   label="Username"
                   type="text"
@@ -50,7 +50,12 @@ function SignInPage() {
                 />
                 <br />
                 <ButtonGroup align="right">
-                  <Button color="primary" type="submit" label="Sign In" />
+                  <Button
+                    color="primary"
+                    type="submit"
+                    label="Sign In"
+                    isLoading={isPending}
+                  />
                 </ButtonGroup>
               </Form>
             </Card>
