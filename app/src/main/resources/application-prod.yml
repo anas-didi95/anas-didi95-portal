@@ -4,6 +4,9 @@ datasources:
     password: "${DB_PASSWORD}"
     url: "${DB_URL}"
     username: "${DB_USERNAME}"
+graphql:
+  graphiql:
+    enabled: false
 liquibase:
   datasources:
     default:
@@ -18,11 +21,10 @@ micronaut:
         paths: "file:/home/app/dist/"
   security:
     token:
+      cookie:
+        cookie-secure: "${COOKIE_SECURE}"
       jwt:
         signatures:
           secret:
             generator:
               secret: "${JWT_SECRET}"
-graphql:
-  graphiql:
-    enabled: false

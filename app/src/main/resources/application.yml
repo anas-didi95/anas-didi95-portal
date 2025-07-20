@@ -5,6 +5,10 @@ datasources:
     password: "sa"
     url: "jdbc:h2:./h2/portal;AUTO_SERVER=TRUE"
     username: "sa"
+graphql:
+  enabled: true
+  graphiql:
+    enabled: true
 jpa:
   default:
     compile-time-hibernate-proxies: true
@@ -34,15 +38,15 @@ micronaut:
     authentication: "cookie"
     enabled: true
     endpoints:
+      introspection:
+        enabled: true
+        path: "/tokenInfo"
       login:
         enabled: true
         path: "/signIn"
       logout:
         enabled: true
         path: "/signOut"
-      introspection:
-        enabled: true
-        path: "/tokenInfo"
     intercept-url-map:
       - pattern: "${micronaut.router.static-resources.web.mapping}"
         http-method: "GET"
@@ -65,7 +69,10 @@ micronaut:
     redirect.enabled: false
     token:
       cookie:
+        cookie-http-only: true
         cookie-path: "${micronaut.server.context-path}"
+        cookie-same-site: "Strict"
+        cookie-secure: false
         enabled: true
         session-cookie: true
       jwt:
@@ -76,7 +83,3 @@ micronaut:
   server:
     context-path: "/portal"
     host: "0.0.0.0"
-graphql:
-  enabled: true
-  graphiql:
-    enabled: true
