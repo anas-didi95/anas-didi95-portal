@@ -1,7 +1,7 @@
 {
   "name": "web",
   "private": true,
-  "version": "v0.1.0",
+  "version": "v0.2.0",
   "type": "module",
   "scripts": {
     "build:watch": "NODE_ENV=development vite build --mode=development --watch",
