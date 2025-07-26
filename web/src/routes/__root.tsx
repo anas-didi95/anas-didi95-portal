@@ -2,8 +2,8 @@ import type { QueryClient } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { createRootRouteWithContext, Outlet } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
+import { useMediaQuery } from "@uidotdev/usehooks";
 import { Bounce, ToastContainer } from "react-toastify";
-import usePrefersColorScheme from "use-prefers-color-scheme";
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   {
@@ -31,13 +31,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 );
 
 function AppLayout() {
-  const colorScheme = usePrefersColorScheme();
+  const isDarkScheme = useMediaQuery("screen and (prefers-color-scheme: dark)");
 
   return (
     <main
       className={
-        colorScheme === "dark"
-          ? `has-background-black-ter`
+        isDarkScheme
+          ? `has-background-black-ter theme-dark`
           : "has-background-white-ter"
       }>
       <Outlet />

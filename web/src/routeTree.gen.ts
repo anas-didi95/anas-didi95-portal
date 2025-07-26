@@ -15,6 +15,7 @@ import { Route as SignInImport } from './routes/sign-in'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated/route'
 import { Route as IndexImport } from './routes/index'
 import { Route as AuthenticatedDashboardImport } from './routes/_authenticated/dashboard'
+import { Route as AuthenticatedMaintenanceUserImport } from './routes/_authenticated/maintenance/user'
 
 // Create/Update Routes
 
@@ -40,6 +41,13 @@ const AuthenticatedDashboardRoute = AuthenticatedDashboardImport.update({
   path: '/dashboard',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+
+const AuthenticatedMaintenanceUserRoute =
+  AuthenticatedMaintenanceUserImport.update({
+    id: '/maintenance/user',
+    path: '/maintenance/user',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 
 // Populate the FileRoutesByPath interface
 
@@ -73,6 +81,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardImport
       parentRoute: typeof AuthenticatedRouteImport
     }
+    '/_authenticated/maintenance/user': {
+      id: '/_authenticated/maintenance/user'
+      path: '/maintenance/user'
+      fullPath: '/maintenance/user'
+      preLoaderRoute: typeof AuthenticatedMaintenanceUserImport
+      parentRoute: typeof AuthenticatedRouteImport
+    }
   }
 }
 
@@ -80,10 +95,12 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedMaintenanceUserRoute: typeof AuthenticatedMaintenanceUserRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedMaintenanceUserRoute: AuthenticatedMaintenanceUserRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
@@ -94,6 +111,7 @@ export interface FileRoutesByFullPath {
   '': typeof AuthenticatedRouteRouteWithChildren
   '/sign-in': typeof SignInRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/maintenance/user': typeof AuthenticatedMaintenanceUserRoute
 }
 
 export interface FileRoutesByTo {
@@ -101,6 +119,7 @@ export interface FileRoutesByTo {
   '': typeof AuthenticatedRouteRouteWithChildren
   '/sign-in': typeof SignInRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/maintenance/user': typeof AuthenticatedMaintenanceUserRoute
 }
 
 export interface FileRoutesById {
@@ -109,19 +128,21 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/sign-in': typeof SignInRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/maintenance/user': typeof AuthenticatedMaintenanceUserRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '' | '/sign-in' | '/dashboard'
+  fullPaths: '/' | '' | '/sign-in' | '/dashboard' | '/maintenance/user'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '' | '/sign-in' | '/dashboard'
+  to: '/' | '' | '/sign-in' | '/dashboard' | '/maintenance/user'
   id:
     | '__root__'
     | '/'
     | '/_authenticated'
     | '/sign-in'
     | '/_authenticated/dashboard'
+    | '/_authenticated/maintenance/user'
   fileRoutesById: FileRoutesById
 }
 
@@ -158,7 +179,8 @@ export const routeTree = rootRoute
     "/_authenticated": {
       "filePath": "_authenticated/route.tsx",
       "children": [
-        "/_authenticated/dashboard"
+        "/_authenticated/dashboard",
+        "/_authenticated/maintenance/user"
       ]
     },
     "/sign-in": {
@@ -166,6 +188,10 @@ export const routeTree = rootRoute
     },
     "/_authenticated/dashboard": {
       "filePath": "_authenticated/dashboard.tsx",
+      "parent": "/_authenticated"
+    },
+    "/_authenticated/maintenance/user": {
+      "filePath": "_authenticated/maintenance/user.tsx",
       "parent": "/_authenticated"
     }
   }

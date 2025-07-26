@@ -1,10 +1,13 @@
 import Navbar from "@/components/Navbar";
-import useAuthTokenInfo from "@/hooks/auth/useAuthTokenInfo";
+import useAuthTokenInfo, { queryKey } from "@/hooks/auth/useAuthTokenInfo";
 import useAppStore from "@/stores/AppStore";
 import { createFileRoute, Outlet, useNavigate } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_authenticated")({
   component: AuthenticatedLayout,
+  beforeLoad: ({ context: { queryClient } }) => {
+    void queryClient.invalidateQueries({ queryKey });
+  },
 });
 
 function AuthenticatedLayout() {

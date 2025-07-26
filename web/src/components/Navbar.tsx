@@ -79,7 +79,7 @@ function Breadcrumb() {
   const breadcrumb = useAppStore((store) => store.breadcrumb);
 
   return (
-    <nav className="breadcrumb" aria-label="breadcrumbs">
+    <nav className="breadcrumb has-arrow-separator" aria-label="breadcrumbs">
       <ul>
         {breadcrumb.map((s, i) => (
           <li
