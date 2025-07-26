@@ -106,13 +106,25 @@ class AuthenticationFactory {
                           userTokenRepository.save(o);
                         });
 
+                    OffsetDateTime lastSigninDate =
+                        Optional.ofNullable(userEntity.getLastSigninDate())
+                            .orElse(effectiveFromDate);
+                    userEntity.setLastSigninDate(effectiveFromDate);
+                    userRepository.update(userEntity);
+
                     log.info("[authenticationProvider] User authenticated...{}", username);
 
                     emitter.next(
                         AuthenticationResponse.success(
                             userEntity.getUsername(),
                             Collections.emptyList(),
-                            Map.of("_user", Map.of("name", userEntity.getName()))));
+                            Map.of(
+                                "_user",
+                                Map.of(
+                                    "name",
+                                    userEntity.getName(),
+                                    "lastSigninDate",
+                                    lastSigninDate.toString()))));
                     emitter.complete();
                   }
                 },

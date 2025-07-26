@@ -8,6 +8,7 @@ export const Route = createFileRoute("/_authenticated/dashboard")({
 
 function DashboardPage() {
   const setBreadcrumb = useAppStore((store) => store.action.setBreadcrumb);
+  const user = useAppStore((store) => store.user);
 
   useEffect(() => {
     setBreadcrumb(["Dashboard"]);
@@ -15,7 +16,12 @@ function DashboardPage() {
 
   return (
     <section className="section">
-      <section className="container">Hello world</section>
+      <section className="container">
+        <h1 className="title">Hi, {user.name}</h1>
+        <h2 className="subtitle">
+          Last Signed In: {user.lastSigninDate?.toLocaleString()}
+        </h2>
+      </section>
     </section>
   );
 }

@@ -22,5 +22,6 @@ export interface ISignInForm {
 export interface ITokenInfo {
   _user: {
     name: string;
+    lastSigninDate: string;
   };
 }

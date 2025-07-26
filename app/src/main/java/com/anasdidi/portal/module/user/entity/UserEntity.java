@@ -6,6 +6,7 @@ import io.micronaut.serde.annotation.Serdeable;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
+import java.time.OffsetDateTime;
 
 @Serdeable
 @Entity
@@ -20,6 +21,9 @@ public class UserEntity extends BaseEntity {
 
   @Column(name = "NM")
   private String name;
+
+  @Column(name = "LAST_SIGNIN_DT")
+  private OffsetDateTime lastSigninDate;
 
   public String getUsername() {
     return username;
@@ -43,5 +47,13 @@ public class UserEntity extends BaseEntity {
 
   public void setName(String name) {
     this.name = name;
+  }
+
+  public OffsetDateTime getLastSigninDate() {
+    return lastSigninDate;
+  }
+
+  public void setLastSigninDate(OffsetDateTime lastSigninDate) {
+    this.lastSigninDate = lastSigninDate;
   }
 }

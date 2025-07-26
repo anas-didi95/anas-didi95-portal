@@ -40,6 +40,9 @@
       <column name="NM" type="VARCHAR(200)">
         <constraints nullable="false" />
       </column>
+      <column name="LAST_SIGNIN_DT" type="TIMESTAMP WITH TIME ZONE">
+        <constraints nullable="true" />
+      </column>
     </createTable>
 
     <addUniqueConstraint tableName="T_USER" columnNames="USERNAME" />

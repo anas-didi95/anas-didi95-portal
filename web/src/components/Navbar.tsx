@@ -8,7 +8,7 @@ import { toast } from "react-toastify";
 
 function Navbar() {
   const [isActive, setActive] = useState(false);
-  const username = useAppStore((store) => store.username);
+  const userName = useAppStore((store) => store.user.name);
   const reset = useAppStore((store) => store.action.reset);
   const { mutate } = useAuthSignOut();
   const navigate = useNavigate();
@@ -57,7 +57,7 @@ function Navbar() {
           <div className="navbar-item has-dropdown is-hoverable">
             <a className="navbar-link">
               <FaUserTie />
-              &nbsp;{username}
+              &nbsp;{userName}
             </a>
             <div className="navbar-dropdown">
               <span className="navbar-item">

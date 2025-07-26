@@ -14,7 +14,7 @@ function AuthenticatedLayout() {
     isFetching,
     isError,
   } = useAuthTokenInfo();
-  const setUsername = useAppStore((store) => store.action.setUsername);
+  const setUser = useAppStore((store) => store.action.setUser);
   const reset = useAppStore((store) => store.action.reset);
   const navigate = useNavigate();
 
@@ -24,7 +24,7 @@ function AuthenticatedLayout() {
   }
 
   if (isSuccess) {
-    setUsername(tokenInfo._user.name);
+    setUser(tokenInfo);
     return (
       <>
         <Navbar />
