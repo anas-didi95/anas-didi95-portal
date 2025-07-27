@@ -41,13 +41,14 @@ function AppLayout() {
     setDarkMode(isDarkScheme);
   }, [isDarkScheme, setDarkMode]);
 
+  useEffect(() => {
+    document.documentElement.classList = isDarkMode
+      ? "has-background-black-ter theme-dark"
+      : "has-background-white-ter theme-light";
+  }, [isDarkMode]);
+
   return (
-    <main
-      className={
-        isDarkMode
-          ? "has-background-black-ter theme-dark"
-          : "has-background-white-ter theme-light"
-      }>
+    <main>
       <Outlet />
     </main>
   );
