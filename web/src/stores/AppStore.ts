@@ -7,6 +7,7 @@ interface IState {
     lastSigninDate?: Date;
   };
   breadcrumb: string[];
+  isDarkMode?: boolean;
 }
 
 interface IAction {
@@ -14,6 +15,7 @@ interface IAction {
     reset: () => void;
     setUser: (token: ITokenInfo) => void;
     setBreadcrumb: (breadcrumb: string[]) => void;
+    setDarkMode: (isDarkMode: boolean) => void;
   };
 }
 
@@ -23,12 +25,14 @@ const initialState: IState = {
     lastSigninDate: undefined,
   },
   breadcrumb: [],
+  isDarkMode: undefined,
 };
 
 const useAppStore = create<IState & IAction>((set) => ({
   ...initialState,
   action: {
-    reset: () => set(initialState),
+    reset: () =>
+      set((prev) => ({ ...initialState, isDarkMode: prev.isDarkMode })),
     setUser: (token) =>
       set({
         user: {
@@ -37,6 +41,7 @@ const useAppStore = create<IState & IAction>((set) => ({
         },
       }),
     setBreadcrumb: (breadcrumb) => set({ breadcrumb }),
+    setDarkMode: (isDarkMode) => set({ isDarkMode }),
   },
 }));
 

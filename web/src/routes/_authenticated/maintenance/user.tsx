@@ -13,5 +13,12 @@ function MaintenanceUserPage() {
     setBreadcrumb(["Maintenance", "User"]);
   }, [setBreadcrumb]);
 
-  return <div>MaintenanceUserPage</div>;
+  return (
+    <section className="section">
+      <section className="container">
+        <h1 className="title">Hi, </h1>
+        <h2 className="subtitle">Last Signed In:</h2>
+      </section>
+    </section>
+  );
 }

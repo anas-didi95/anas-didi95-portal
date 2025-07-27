@@ -3,7 +3,7 @@ import useAuthSignOut from "@/hooks/auth/useAuthSignOut";
 import useAppStore from "@/stores/AppStore";
 import { useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import { FaUserTie } from "react-icons/fa6";
+import { FaMoon, FaSun, FaUserTie } from "react-icons/fa6";
 import { toast } from "react-toastify";
 
 function Navbar() {
@@ -12,6 +12,8 @@ function Navbar() {
   const reset = useAppStore((store) => store.action.reset);
   const { mutate } = useAuthSignOut();
   const navigate = useNavigate();
+  const setDarkMode = useAppStore((store) => store.action.setDarkMode);
+  const isDarkMode = useAppStore((store) => store.isDarkMode);
 
   const handleActive = () => setActive((prev) => !prev);
   const handleSignOut = () =>
@@ -22,6 +24,8 @@ function Navbar() {
         void navigate({ to: "/sign-in", replace: true });
       },
     });
+  const handleLightMode = () => setDarkMode(false);
+  const handleDarkMode = () => setDarkMode(true);
 
   return (
     <nav
@@ -54,6 +58,24 @@ function Navbar() {
           <div className="navbar-item is-hidden-touch">|</div>
         </div>
         <div className="navbar-end">
+          <div className="navbar-item">
+            <div className="tabs is-toggle is-toggle-rounded">
+              <ul>
+                <li className={`${isDarkMode ? "is-active" : ""}`}>
+                  <a onClick={handleDarkMode}>
+                    <FaMoon />
+                    <span className="ml-1">Dark</span>
+                  </a>
+                </li>
+                <li className={`${!isDarkMode ? "is-active" : ""}`}>
+                  <a onClick={handleLightMode}>
+                    <span className="mr-1">Light</span>
+                    <FaSun />
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
           <div className="navbar-item has-dropdown is-hoverable">
             <a className="navbar-link">
               <FaUserTie />
