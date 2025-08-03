@@ -25,3 +25,15 @@ export interface ITokenInfo {
     lastSigninDate: string;
   };
 }
+
+export interface ITableData {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  resultList: any[];
+  pagination?: IPagination;
+}
+
+export interface IPagination {
+  pageNo: number;
+  totalRecords: number;
+  totalRecordsPerPage: number;
+}
