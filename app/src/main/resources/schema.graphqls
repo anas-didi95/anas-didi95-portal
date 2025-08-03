@@ -1,11 +1,16 @@
 type Query {
   hello(name: String): String!
-  users: [User]!
+  users(pageNo: Int!, totalRecordsPerPage: Int): UserSearch
   user(username: String!): User
 }
 
+type UserSearch {
+  resultList: [User]!
+  pagination: Pagination!
+}
+
 type User {
-  id: String!
+  id: ID!
   isDeleted: Boolean!
   version: Int!
   createBy: String!
@@ -14,4 +19,10 @@ type User {
   updateDate: String!
   username: String!
   name: String!
+}
+
+type Pagination {
+  pageNo: Int!
+  totalRecords: Int!
+  totalRecordsPerPage: Int
 }
