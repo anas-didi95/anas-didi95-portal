@@ -1,3 +1,4 @@
+import type { IPagination, IUser } from "@/commons/types";
 import type { AxiosInstance } from "axios";
 
 export class UserService {
@@ -22,8 +23,9 @@ export class UserService {
       pageNo,
       totalRecordsPerPage,
     };
-    const res = await this.graphql.post("", { query, variables }, { signal });
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-    return res.data;
+    const res = await this.graphql.post<{
+      data: { users: { resultList: IUser[]; pagination: IPagination } };
+    }>("", { query, variables }, { signal });
+    return res.data.data.users;
   }
 }

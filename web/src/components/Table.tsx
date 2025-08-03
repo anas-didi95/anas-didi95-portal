@@ -1,6 +1,6 @@
 import type { ITableData } from "@/commons/types";
 import DataTablesCore, { type ConfigColumns } from "datatables.net-bm";
-import DataTable from "datatables.net-react";
+import DataTable, { type DataTableSlots } from "datatables.net-react";
 import {
   FaAngleLeft,
   FaAngleRight,
@@ -9,21 +9,28 @@ import {
 } from "react-icons/fa6";
 
 interface ITable {
+  data: ITableData;
   headers: string[];
   columns: ConfigColumns[];
-  data: ITableData;
+  slots?: DataTableSlots;
 }
 
-function Table({ headers, columns, data: { pagination, resultList } }: ITable) {
+function Table({
+  data: { pagination, resultList = [] },
+  headers,
+  columns,
+  slots,
+}: ITable) {
   DataTable.use(DataTablesCore);
 
   return (
     <>
       <div className="table-container">
         <DataTable
-          columns={columns}
           className="table is-bordered is-hoverable is-fullwidth"
           data={resultList}
+          columns={columns}
+          slots={slots}
           options={{ paging: false, info: false }}>
           <thead>
             <tr>
@@ -57,6 +64,10 @@ function Pagination({
   const totalPages =
     Math.floor(totalRecords / totalRecordsPerPage) +
     (totalRecords % totalRecordsPerPage > 0 ? 1 : 0);
+  const isCurrentFirstPage = pageNo === 1;
+  const hasPrevPage = pageNo > 1;
+  const hasNextPage = pageNo < totalPages;
+  const isCurrentLastPage = pageNo === totalPages;
 
   return (
     <nav
@@ -65,14 +76,14 @@ function Pagination({
       aria-label="pagination">
       <ul className="pagination-list">
         <li>
-          <a href="#" className="pagination-link">
+          <button className="pagination-link" disabled={isCurrentFirstPage}>
             <FaAnglesLeft />
-          </a>
+          </button>
         </li>
         <li>
-          <a href="#" className="pagination-link">
+          <button className="pagination-link" disabled={!hasPrevPage}>
             <FaAngleLeft />
-          </a>
+          </button>
         </li>
         <li className="mx-1">
           <div className="field has-addons has-addons-right">
@@ -88,14 +99,14 @@ function Pagination({
           </div>
         </li>
         <li>
-          <a href="#" className="pagination-link">
+          <button className="pagination-link" disabled={!hasNextPage}>
             <FaAngleRight />
-          </a>
+          </button>
         </li>
         <li>
-          <a href="#" className="pagination-link">
+          <button className="pagination-link" disabled={isCurrentLastPage}>
             <FaAnglesRight />
-          </a>
+          </button>
         </li>
       </ul>
     </nav>

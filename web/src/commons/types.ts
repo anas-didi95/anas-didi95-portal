@@ -28,7 +28,7 @@ export interface ITokenInfo {
 
 export interface ITableData {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  resultList: any[];
+  resultList?: any[];
   pagination?: IPagination;
 }
 
@@ -36,4 +36,16 @@ export interface IPagination {
   pageNo: number;
   totalRecords: number;
   totalRecordsPerPage: number;
+}
+
+export interface IUser {
+  id: string;
+  isDeleted: boolean;
+  version: number;
+  createBy: string;
+  createDate: string;
+  updateBy: string;
+  updateDate: string;
+  username: string;
+  name: string;
 }
