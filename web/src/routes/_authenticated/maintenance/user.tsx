@@ -1,4 +1,5 @@
 import Table from "@/components/Table";
+import useUserSearch from "@/hooks/user/useUserSearch";
 import useAppStore from "@/stores/AppStore";
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect } from "react";
@@ -9,6 +10,7 @@ export const Route = createFileRoute("/_authenticated/maintenance/user")({
 
 function MaintenanceUserPage() {
   const setNavbar = useAppStore((store) => store.action.setNavbar);
+  useUserSearch();
 
   useEffect(() => {
     setNavbar(
