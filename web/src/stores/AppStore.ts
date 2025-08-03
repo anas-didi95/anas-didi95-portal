@@ -1,12 +1,21 @@
 import type { ITokenInfo } from "@/commons/types";
+import type { FileRoutesByTo } from "@/routeTree.gen";
 import { create } from "zustand";
+
+interface IMenu {
+  name: string;
+  route: keyof FileRoutesByTo;
+}
 
 interface IState {
   user: {
     name: string;
     lastSigninDate?: Date;
   };
-  breadcrumb: string[];
+  navbar: {
+    breadcrumb: string[];
+    menu: IMenu[];
+  };
   isDarkMode?: boolean;
 }
 
@@ -14,7 +23,7 @@ interface IAction {
   action: {
     reset: () => void;
     setUser: (token: ITokenInfo) => void;
-    setBreadcrumb: (breadcrumb: string[]) => void;
+    setNavbar: (breadcrumb: string[], menu: IMenu[]) => void;
     setDarkMode: (isDarkMode: boolean) => void;
   };
 }
@@ -24,7 +33,10 @@ const initialState: IState = {
     name: "",
     lastSigninDate: undefined,
   },
-  breadcrumb: [],
+  navbar: {
+    breadcrumb: [],
+    menu: [],
+  },
   isDarkMode: undefined,
 };
 
@@ -40,7 +52,7 @@ const useAppStore = create<IState & IAction>((set) => ({
           lastSigninDate: new Date(token._user.lastSigninDate),
         },
       }),
-    setBreadcrumb: (breadcrumb) => set({ breadcrumb }),
+    setNavbar: (breadcrumb, menu) => set({ navbar: { breadcrumb, menu } }),
     setDarkMode: (isDarkMode) => set({ isDarkMode }),
   },
 }));

@@ -51,11 +51,8 @@ function Navbar() {
 
       <div className={`navbar-menu ${isActive ? "is-active" : ""}`}>
         <div className="navbar-start">
-          <div className="navbar-item is-hidden-touch">|</div>
-          <div className="navbar-item">
-            <Breadcrumb />
-          </div>
-          <div className="navbar-item is-hidden-touch">|</div>
+          <Breadcrumb />
+          <Menu />
         </div>
         <div className="navbar-end">
           <div className="navbar-item">
@@ -98,22 +95,48 @@ function Navbar() {
 }
 
 function Breadcrumb() {
-  const breadcrumb = useAppStore((store) => store.breadcrumb);
+  const breadcrumb = useAppStore((store) => store.navbar.breadcrumb);
 
   return (
-    <nav className="breadcrumb has-arrow-separator" aria-label="breadcrumbs">
-      <ul>
-        {breadcrumb.map((s, i) => (
-          <li
-            key={`breadcrumb${i}`}
-            className={`${i === breadcrumb.length - 1 ? "is-active" : ""}`}>
-            <a href="#" className="has-text-white">
-              {s}
-            </a>
-          </li>
-        ))}
-      </ul>
-    </nav>
+    <>
+      <div className="navbar-item is-hidden-touch">|</div>
+      <div className="navbar-item">
+        <nav
+          className="breadcrumb has-arrow-separator"
+          aria-label="breadcrumbs">
+          <ul>
+            {breadcrumb.map((s, i) => (
+              <li
+                key={`breadcrumb${i}`}
+                className={`${i === breadcrumb.length - 1 ? "is-active" : ""}`}>
+                <a href="#" className="has-text-white">
+                  {s}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      </div>
+      <div className="navbar-item is-hidden-touch">|</div>
+    </>
+  );
+}
+
+function Menu() {
+  const menu = useAppStore((store) => store.navbar.menu);
+  const navigate = useNavigate();
+
+  return (
+    <>
+      {menu?.map((m, i) => (
+        <a
+          key={`menu${m.route}${i}`}
+          className="navbar-item"
+          onClick={() => void navigate({ to: m.route })}>
+          {m.name}
+        </a>
+      ))}
+    </>
   );
 }
 

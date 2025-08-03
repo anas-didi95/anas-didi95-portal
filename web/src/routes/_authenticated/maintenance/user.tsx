@@ -7,11 +7,14 @@ export const Route = createFileRoute("/_authenticated/maintenance/user")({
 });
 
 function MaintenanceUserPage() {
-  const setBreadcrumb = useAppStore((store) => store.action.setBreadcrumb);
+  const setNavbar = useAppStore((store) => store.action.setNavbar);
 
   useEffect(() => {
-    setBreadcrumb(["Maintenance", "User"]);
-  }, [setBreadcrumb]);
+    setNavbar(
+      ["Maintenance", "User"],
+      [{ name: "Dashboard", route: "/dashboard" }],
+    );
+  }, [setNavbar]);
 
   return (
     <section className="section">

@@ -9,14 +9,14 @@ export const Route = createFileRoute("/_authenticated/dashboard")({
 });
 
 function DashboardPage() {
-  const setBreadcrumb = useAppStore((store) => store.action.setBreadcrumb);
+  const setNavbar = useAppStore((store) => store.action.setNavbar);
   const user = useAppStore((store) => store.user);
   const [ref, isHover] = useHover();
   const navigate = useNavigate();
 
   useEffect(() => {
-    setBreadcrumb(["Dashboard"]);
-  }, [setBreadcrumb]);
+    setNavbar(["Dashboard"], []);
+  }, [setNavbar]);
 
   const hoverCell = isHover ? "has-text-white has-background-info" : "";
   const handleNavigate = () => void navigate({ to: "/maintenance/user" });
