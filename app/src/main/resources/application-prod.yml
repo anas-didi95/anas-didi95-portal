@@ -23,6 +23,9 @@ micronaut:
     token:
       cookie:
         cookie-secure: "${COOKIE_SECURE}"
+      generator:
+        access-token:
+          expiration: "${ACCESS_TOKEN_EXPIRY_SECS}"
       jwt:
         signatures:
           secret:

@@ -75,6 +75,9 @@ micronaut:
         cookie-secure: false
         enabled: true
         session-cookie: true
+      generator:
+        access-token:
+          expiration: 86400
       jwt:
         signatures:
           secret:
