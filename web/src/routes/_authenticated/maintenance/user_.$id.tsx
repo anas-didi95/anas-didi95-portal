@@ -1,4 +1,5 @@
 import Card from "@/components/Card";
+import SectionContainer from "@/components/SectionContainer";
 import useUserGetUser from "@/hooks/user/useUserGetUser";
 import useAppStore from "@/stores/AppStore";
 import { createFileRoute } from "@tanstack/react-router";
@@ -21,15 +22,10 @@ function MaintenanceUserIdPage() {
   }, [data?.username, setNavbar]);
 
   return (
-    <section className="section">
-      <section className="container">
-        <h1 className="title">User Maintenance</h1>
-        <h2 className="subtitle">{data?.name}</h2>
-        <br />
-        <Card label="View User">
-          <div>Hello world</div>
-        </Card>
-      </section>
-    </section>
+    <SectionContainer title="User Maintenance" subtitle={data?.name}>
+      <Card label="View User">
+        <div>Hello world</div>
+      </Card>
+    </SectionContainer>
   );
 }

@@ -1,3 +1,4 @@
+import SectionContainer from "@/components/SectionContainer";
 import useAppStore from "@/stores/AppStore";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useHover } from "@uidotdev/usehooks";
@@ -22,27 +23,22 @@ function DashboardPage() {
   const handleNavigate = () => void navigate({ to: "/maintenance/user" });
 
   return (
-    <section className="section">
-      <section className="container">
-        <h1 className="title">Hi, {user.name}</h1>
-        <h2 className="subtitle">
-          Last Signed In: {user.lastSigninDate?.toLocaleString()}
-        </h2>
-        <br />
-        <div className="fixed-grid has-4-cols has-2-cols-mobile">
-          <div className="grid">
-            <div
-              ref={ref}
-              className="cell has-text-centered is-size-5 has-text-weight-semibold is-clickable"
-              onClick={handleNavigate}>
-              <div className={`box ${hoverCell}`}>
-                <FaUsers />
-                <p className="mt-1">User Maintenance</p>
-              </div>
+    <SectionContainer
+      title={`Hi, ${user.name}`}
+      subtitle={`Last Signed In: ${user.lastSigninDate?.toLocaleString()}`}>
+      <div className="fixed-grid has-4-cols has-2-cols-mobile">
+        <div className="grid">
+          <div
+            ref={ref}
+            className="cell has-text-centered is-size-5 has-text-weight-semibold is-clickable"
+            onClick={handleNavigate}>
+            <div className={`box ${hoverCell}`}>
+              <FaUsers />
+              <p className="mt-1">User Maintenance</p>
             </div>
           </div>
         </div>
-      </section>
-    </section>
+      </div>
+    </SectionContainer>
   );
 }
