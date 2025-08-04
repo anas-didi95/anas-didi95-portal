@@ -1,5 +1,6 @@
 interface IFieldView {
-  value: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  value: any;
 }
 
 function FieldView({ value }: IFieldView) {

@@ -1,4 +1,5 @@
 import { Controller } from "react-hook-form";
+import { FaCheck, FaX } from "react-icons/fa6";
 import type { IFormFieldBase } from "./Form";
 
 interface IFieldCheckbox extends IFormFieldBase {
@@ -7,7 +8,14 @@ interface IFieldCheckbox extends IFormFieldBase {
   };
 }
 
-function FieldCheckbox({ control, label, name, rule, props }: IFieldCheckbox) {
+function FieldCheckbox({
+  control,
+  label,
+  name,
+  rule,
+  props,
+  isEdit,
+}: IFieldCheckbox) {
   const controller = (
     <Controller
       name={name}
@@ -15,9 +23,15 @@ function FieldCheckbox({ control, label, name, rule, props }: IFieldCheckbox) {
       rules={rule}
       render={({ field, fieldState }) => (
         <>
-          <input {...field} {...props} type="checkbox" />
-          {fieldState.error && (
-            <p className="help is-danger">{fieldState.error.message}</p>
+          {isEdit ? (
+            <>
+              <input {...field} {...props} type="checkbox" />
+              {fieldState.error && (
+                <p className="help is-danger">{fieldState.error.message}</p>
+              )}
+            </>
+          ) : (
+            <>{(field.value as boolean) ? <FaCheck /> : <FaX />}</>
           )}
         </>
       )}
@@ -34,7 +48,7 @@ function FieldCheckbox({ control, label, name, rule, props }: IFieldCheckbox) {
           </label>
         </div>
       )}
-      <label className="checkbox">
+      <label className="checkbox is-flex is-align-content-center">
         {controller}
         {props?.label && (
           <span className="ml-2">
