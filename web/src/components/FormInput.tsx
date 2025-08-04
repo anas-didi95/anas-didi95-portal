@@ -3,7 +3,7 @@ import type { IFormFieldBase } from "./Form";
 
 interface IFormInput extends IFormFieldBase {
   props?: {
-    type?: "text" | "password";
+    type?: "text" | "password" | "datetime-local";
   };
 }
 

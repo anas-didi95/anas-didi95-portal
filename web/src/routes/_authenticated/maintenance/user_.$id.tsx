@@ -1,4 +1,5 @@
 import type { IUser } from "@/commons/types";
+import { convertDateTimeInput } from "@/commons/utils";
 import Card from "@/components/Card";
 import type { IFormFieldConfig } from "@/components/Form";
 import Form from "@/components/Form";
@@ -17,8 +18,14 @@ export const Route = createFileRoute("/_authenticated/maintenance/user_/$id")({
 function MaintenanceUserIdPage() {
   const { id } = Route.useParams();
   const setNavbar = useAppStore((store) => store.action.setNavbar);
-  const { data } = useUserGetUser(id);
-  const { control } = useForm<IUser>({ values: data });
+  const { data, isLoading } = useUserGetUser(id);
+  const { control } = useForm<IUser>({
+    values: data && {
+      ...data,
+      updateDate: convertDateTimeInput(data.updateDate),
+      createDate: convertDateTimeInput(data.createDate),
+    },
+  });
 
   useEffect(() => {
     setNavbar(
@@ -49,16 +56,26 @@ function MaintenanceUserIdPage() {
     { hidden: true },
     { component: FormInput, label: "Is Disabled", name: "isDeleted" },
     { component: FormInput, label: "Update By", name: "updateBy" },
-    { component: FormInput, label: "Update Date", name: "updateDate" },
+    {
+      component: FormInput,
+      label: "Update Date",
+      name: "updateDate",
+      props: { type: "datetime-local" },
+    },
     { component: FormInput, label: "Version", name: "version" },
     { component: FormInput, label: "Create By", name: "createBy" },
-    { component: FormInput, label: "Create Date", name: "createDate" },
+    {
+      component: FormInput,
+      label: "Create Date",
+      name: "createDate",
+      props: { type: "datetime-local" },
+    },
   ];
 
   return (
     <SectionContainer title="User Maintenance" subtitle={data?.name}>
       <Card label="View User">
-        <Form control={control} fields={fields} />
+        <Form control={control} fields={fields} isPending={isLoading} />
       </Card>
     </SectionContainer>
   );
