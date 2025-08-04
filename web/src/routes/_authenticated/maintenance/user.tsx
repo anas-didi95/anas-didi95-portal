@@ -1,6 +1,6 @@
 import type { IUser } from "@/commons/types";
 import Table from "@/components/Table";
-import useUserSearch from "@/hooks/user/useUserSearch";
+import useUserSearch from "@/hooks/user/useUserGetUsers";
 import useAppStore from "@/stores/AppStore";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect } from "react";

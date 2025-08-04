@@ -8,12 +8,12 @@ export class UserService {
     this.graphql = graphql;
   }
 
-  async search(
+  async getUsers(
     pageNo: number,
     totalRecordsPerPage: number,
     signal: AbortSignal,
   ) {
-    const query = `query ($pageNo: Int!, $totalRecordsPerPage: Int) {
+    const query = `query GetUsers ($pageNo: Int!, $totalRecordsPerPage: Int) {
       users(pageNo: $pageNo, totalRecordsPerPage: $totalRecordsPerPage) {
         resultList { id username name isDeleted lastSigninDate }
         pagination { pageNo totalRecords totalRecordsPerPage }
@@ -27,5 +27,21 @@ export class UserService {
       data: { users: { resultList: IUser[]; pagination: IPagination } };
     }>("", { query, variables }, { signal });
     return res.data.data.users;
+  }
+
+  async getUser(id: string, signal: AbortSignal) {
+    const query = `query GetUser($id: ID!) {
+      user(id: $id) {
+        id isDeleted version createBy createDate updateBy updateDate
+        username name lastSigninDate
+      }
+    }`;
+    const variables = { id };
+    const res = await this.graphql.post<{ data: { user: IUser } }>(
+      "",
+      { query, variables },
+      { signal },
+    );
+    return res.data.data.user;
   }
 }

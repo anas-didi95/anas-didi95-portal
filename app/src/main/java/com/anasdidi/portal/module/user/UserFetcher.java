@@ -11,6 +11,7 @@ import io.micronaut.data.model.Pageable;
 import jakarta.inject.Singleton;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Singleton
 public class UserFetcher {
@@ -23,7 +24,7 @@ public class UserFetcher {
     this.userMapper = userMapper;
   }
 
-  public DataFetcher<SearchDTO<UserDTO>> getUserList() {
+  public DataFetcher<SearchDTO<UserDTO>> getUsers() {
     return env -> {
       int pageNo = env.getArgument("pageNo");
       int totalRecordsPerPage =
@@ -39,10 +40,11 @@ public class UserFetcher {
   }
 
   public DataFetcher<UserDTO> getUser() {
-    return env ->
-        userRepository
-            .findByUsername(env.getArgument("username"))
-            .map(userMapper::toDTO)
-            .orElse(null);
+    return env -> {
+      UUID id = UUID.fromString(env.getArgument("id"));
+
+      Optional<UserEntity> result = userRepository.findById(id);
+      return result.map(userMapper::toDTO).orElse(null);
+    };
   }
 }

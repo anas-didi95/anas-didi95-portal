@@ -2,13 +2,13 @@ import { withAbort } from "@/commons/hoc/withAbort";
 import { useUserService } from "@/contexts/ServiceContext";
 import { useQuery } from "@tanstack/react-query";
 
-const useUserSearch = () => {
+const useUserGetUsers = () => {
   const userService = useUserService();
 
   return useQuery({
-    queryKey: ["user", "search"],
-    queryFn: () => withAbort((signal) => userService.search(1, 10, signal)),
+    queryKey: ["user", "users"],
+    queryFn: () => withAbort((signal) => userService.getUsers(1, 10, signal)),
   });
 };
 
-export default useUserSearch;
+export default useUserGetUsers;

@@ -41,7 +41,7 @@ public class GraphQLFactory {
                 "Query",
                 typeWiring ->
                     typeWiring
-                        .dataFetcher("users", userFetcher.getUserList())
+                        .dataFetcher("users", userFetcher.getUsers())
                         .dataFetcher("user", userFetcher.getUser()))
             .build();
 

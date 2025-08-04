@@ -1,7 +1,6 @@
 type Query {
-  hello(name: String): String!
   users(pageNo: Int!, totalRecordsPerPage: Int): UserSearch
-  user(username: String!): User
+  user(id: ID!): User!
 }
 
 type UserSearch {
