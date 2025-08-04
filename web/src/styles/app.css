@@ -21571,4 +21571,9 @@ main {
   top: 50%;
 }
 
+.field-view {
+  border: 1px solid;
+  border-radius: 5px;
+}
+
 /*# sourceMappingURL=app.css.map */

@@ -51,6 +51,7 @@ function Form({
                     name={field.name!}
                     rule={field.rule}
                     props={field.props}
+                    isEdit={field.isEdit ?? true}
                   />
                 </div>
               );
@@ -70,6 +71,7 @@ export interface IFormFieldBase {
   control: Control<any, any, any>;
   label: string;
   name: string;
+  isEdit: boolean;
   rule?: IFormFieldRule;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   props?: Record<string, any>; // Additional props passed to component
@@ -81,6 +83,7 @@ export interface IFormFieldConfig {
   label?: string;
   name?: string;
   rule?: IFormFieldRule;
+  isEdit?: boolean;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   props?: Record<string, any>; // Additional props passed to component
 }

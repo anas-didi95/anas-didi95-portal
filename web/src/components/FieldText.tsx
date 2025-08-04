@@ -1,9 +1,10 @@
 import { Controller } from "react-hook-form";
+import FieldView from "./FieldView";
 import type { IFormFieldBase } from "./Form";
 
 type IFieldText = IFormFieldBase;
 
-function FieldText({ control, label, name, rule, props }: IFieldText) {
+function FieldText({ control, label, name, rule, props, isEdit }: IFieldText) {
   const controller = (
     <Controller
       name={name}
@@ -11,14 +12,20 @@ function FieldText({ control, label, name, rule, props }: IFieldText) {
       rules={rule}
       render={({ field, fieldState }) => (
         <>
-          <input
-            {...field}
-            {...props}
-            type="text"
-            className={`input ${fieldState.error ? "is-danger" : ""}`}
-          />
-          {fieldState.error && (
-            <p className="help is-danger">{fieldState.error.message}</p>
+          {isEdit ? (
+            <>
+              <input
+                {...field}
+                {...props}
+                type="text"
+                className={`input ${fieldState.error ? "is-danger" : ""}`}
+              />
+              {fieldState.error && (
+                <p className="help is-danger">{fieldState.error.message}</p>
+              )}
+            </>
+          ) : (
+            <FieldView value={field.value as string} />
           )}
         </>
       )}
