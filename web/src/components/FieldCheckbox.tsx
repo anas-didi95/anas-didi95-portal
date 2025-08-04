@@ -1,13 +1,13 @@
 import { Controller } from "react-hook-form";
 import type { IFormFieldBase } from "./Form";
 
-interface IFormCheckbox extends IFormFieldBase {
+interface IFieldCheckbox extends IFormFieldBase {
   props?: {
     label?: string;
   };
 }
 
-function FormCheckbox({ control, label, name, rule, props }: IFormCheckbox) {
+function FieldCheckbox({ control, label, name, rule, props }: IFieldCheckbox) {
   const controller = (
     <Controller
       name={name}
@@ -47,4 +47,4 @@ function FormCheckbox({ control, label, name, rule, props }: IFormCheckbox) {
   );
 }
 
-export default FormCheckbox;
+export default FieldCheckbox;

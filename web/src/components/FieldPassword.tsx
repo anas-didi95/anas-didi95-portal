@@ -1,13 +1,9 @@
 import { Controller } from "react-hook-form";
 import type { IFormFieldBase } from "./Form";
 
-interface IFormInput extends IFormFieldBase {
-  props?: {
-    type?: "text" | "password" | "datetime-local";
-  };
-}
+type IFieldPassword = IFormFieldBase;
 
-function FormInput({ control, label, name, rule, props }: IFormInput) {
+function FieldPassword({ control, label, name, rule, props }: IFieldPassword) {
   const controller = (
     <Controller
       name={name}
@@ -18,6 +14,7 @@ function FormInput({ control, label, name, rule, props }: IFormInput) {
           <input
             {...field}
             {...props}
+            type="password"
             className={`input ${fieldState.error ? "is-danger" : ""}`}
           />
           {fieldState.error && (
@@ -39,4 +36,4 @@ function FormInput({ control, label, name, rule, props }: IFormInput) {
   );
 }
 
-export default FormInput;
+export default FieldPassword;

@@ -1,10 +1,11 @@
 import type { IUser } from "@/commons/types";
 import { convertDateTimeInput } from "@/commons/utils";
 import Card from "@/components/Card";
+import FieldCheckbox from "@/components/FieldCheckbox";
+import FieldDateTime from "@/components/FieldDateTime";
+import FieldText from "@/components/FieldText";
 import type { IFormFieldConfig } from "@/components/Form";
 import Form from "@/components/Form";
-import FormCheckbox from "@/components/FormCheckbox";
-import FormInput from "@/components/FormInput";
 import SectionContainer from "@/components/SectionContainer";
 import useUserGetUser from "@/hooks/user/useUserGetUser";
 import useAppStore from "@/stores/AppStore";
@@ -37,39 +38,31 @@ function MaintenanceUserIdPage() {
 
   const fields: IFormFieldConfig[] = [
     {
-      component: FormInput,
+      component: FieldText,
       label: "Username",
       name: "username",
       rule: { required: true },
-      props: {
-        type: "text",
-      },
     },
     {
-      component: FormInput,
+      component: FieldText,
       label: "Name",
       name: "name",
       rule: { required: true },
-      props: {
-        type: "text",
-      },
     },
     { hidden: true },
-    { component: FormCheckbox, label: "Is Disabled", name: "isDeleted" },
-    { component: FormInput, label: "Update By", name: "updateBy" },
+    { component: FieldCheckbox, label: "Is Disabled", name: "isDeleted" },
+    { component: FieldText, label: "Update By", name: "updateBy" },
     {
-      component: FormInput,
+      component: FieldDateTime,
       label: "Update Date",
       name: "updateDate",
-      props: { type: "datetime-local" },
     },
-    { component: FormInput, label: "Version", name: "version" },
-    { component: FormInput, label: "Create By", name: "createBy" },
+    { component: FieldText, label: "Version", name: "version" },
+    { component: FieldText, label: "Create By", name: "createBy" },
     {
-      component: FormInput,
+      component: FieldDateTime,
       label: "Create Date",
       name: "createDate",
-      props: { type: "datetime-local" },
     },
   ];
 
