@@ -3,6 +3,7 @@ import { convertDateTimeInput } from "@/commons/utils";
 import Card from "@/components/Card";
 import type { IFormFieldConfig } from "@/components/Form";
 import Form from "@/components/Form";
+import FormCheckbox from "@/components/FormCheckbox";
 import FormInput from "@/components/FormInput";
 import SectionContainer from "@/components/SectionContainer";
 import useUserGetUser from "@/hooks/user/useUserGetUser";
@@ -54,7 +55,7 @@ function MaintenanceUserIdPage() {
       },
     },
     { hidden: true },
-    { component: FormInput, label: "Is Disabled", name: "isDeleted" },
+    { component: FormCheckbox, label: "Is Disabled", name: "isDeleted" },
     { component: FormInput, label: "Update By", name: "updateBy" },
     {
       component: FormInput,
