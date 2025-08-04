@@ -15,4 +15,5 @@ public record UserDTO(
     String updateBy,
     OffsetDateTime updateDate,
     String username,
-    String name) {}
+    String name,
+    OffsetDateTime lastSigninDate) {}

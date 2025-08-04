@@ -26,20 +26,20 @@ function MaintenanceUserPage() {
         <br />
         <div className="box">
           <Table
-            headers={["Username", "Name", "Is Disabled", "Last Updated"]}
+            headers={["Username", "Name", "Is Disabled", "Last Sign In Date"]}
             columns={[
               { name: "username", data: "username", width: "20%" },
               { name: "name", data: "name", width: "40%" },
               { name: "isDeleted", data: "isDeleted", width: "15%" },
-              { name: "updateDate", data: "updateDate", width: "25%" },
+              { name: "lastSigninDate", data: "lastSigninDate", width: "25%" },
             ]}
             slots={{
               username: (data: string) => <a>{data}</a>,
               isDeleted: (data: boolean) => (
                 <input type="checkbox" checked={data} />
               ),
-              updateDate: (data: string) => (
-                <span>{new Date(data).toLocaleString()}</span>
+              lastSigninDate: (data: string) => (
+                <span>{data ? new Date(data).toLocaleString() : ""}</span>
               ),
             }}
             data={{

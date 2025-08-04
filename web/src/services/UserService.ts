@@ -15,7 +15,7 @@ export class UserService {
   ) {
     const query = `query ($pageNo: Int!, $totalRecordsPerPage: Int) {
       users(pageNo: $pageNo, totalRecordsPerPage: $totalRecordsPerPage) {
-        resultList { id username name isDeleted updateDate }
+        resultList { id username name isDeleted lastSigninDate }
         pagination { pageNo totalRecords totalRecordsPerPage }
       }
     }`;

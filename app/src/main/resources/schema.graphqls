@@ -19,6 +19,7 @@ type User {
   updateDate: String!
   username: String!
   name: String!
+  lastSigninDate: String
 }
 
 type Pagination {
