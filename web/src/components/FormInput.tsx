@@ -1,30 +1,23 @@
-import { ValidatorMessage } from "@/commons/utils";
-import { Controller, type Control } from "react-hook-form";
+import { Controller } from "react-hook-form";
+import type { IFormFieldBase } from "./Form";
 
-interface IFormInput {
-  name: string;
-  label: string;
-  type: "text" | "password";
-  rule?: {
-    required?: boolean;
+interface IFormInput extends IFormFieldBase {
+  props?: {
+    type?: "text" | "password";
   };
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  control: Control<any, any, any>;
 }
 
-function FormInput({ label, type, name, rule, control }: IFormInput) {
+function FormInput({ control, label, name, rule, props }: IFormInput) {
   const controller = (
     <Controller
       name={name}
       control={control}
-      rules={{
-        required: rule?.required && ValidatorMessage.fieldRequired(label),
-      }}
+      rules={rule}
       render={({ field, fieldState }) => (
         <>
           <input
             {...field}
-            type={type}
+            {...props}
             className={`input ${fieldState.error ? "is-danger" : ""}`}
           />
           {fieldState.error && (

@@ -2,7 +2,7 @@ import type { ISignInForm } from "@/commons/types";
 import Button from "@/components/Button";
 import ButtonGroup from "@/components/ButtonGroup";
 import Card from "@/components/Card";
-import Form from "@/components/Form";
+import Form, { type IFormFieldConfig } from "@/components/Form";
 import FormInput from "@/components/FormInput";
 import useAuthSignIn from "@/hooks/auth/useAuthSignIn";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
@@ -27,27 +27,35 @@ function SignInPage() {
     });
   });
 
+  const fields: IFormFieldConfig[] = [
+    {
+      component: FormInput,
+      label: "Username",
+      name: "username",
+      rule: { required: true },
+      props: { type: "text" },
+    },
+    {
+      component: FormInput,
+      label: "Password",
+      name: "password",
+      rule: { required: true },
+      props: { type: "password" },
+    },
+  ];
+
   return (
     <section className="hero is-fullheight">
       <div className="hero-body">
         <div className="columns container">
           <div className="column is-6 is-offset-3">
             <Card label="Sign In">
-              <Form onSubmit={handleSignIn} isPending={isPending}>
-                <FormInput
-                  label="Username"
-                  type="text"
-                  name="username"
-                  control={control}
-                  rule={{ required: true }}
-                />
-                <FormInput
-                  label="Password"
-                  type="password"
-                  name="password"
-                  control={control}
-                  rule={{ required: true }}
-                />
+              <Form
+                control={control}
+                fields={fields}
+                cols={{ default: 1, mobile: 1 }}
+                isPending={isPending}
+                onSubmit={handleSignIn}>
                 <br />
                 <ButtonGroup align="right">
                   <Button

@@ -1,5 +1,7 @@
 import type { IUser } from "@/commons/types";
 import Card from "@/components/Card";
+import type { IFormFieldConfig } from "@/components/Form";
+import Form from "@/components/Form";
 import FormInput from "@/components/FormInput";
 import SectionContainer from "@/components/SectionContainer";
 import useUserGetUser from "@/hooks/user/useUserGetUser";
@@ -25,82 +27,38 @@ function MaintenanceUserIdPage() {
     );
   }, [data?.username, setNavbar]);
 
+  const fields: IFormFieldConfig[] = [
+    {
+      component: FormInput,
+      label: "Username",
+      name: "username",
+      rule: { required: true },
+      props: {
+        type: "text",
+      },
+    },
+    {
+      component: FormInput,
+      label: "Name",
+      name: "name",
+      rule: { required: true },
+      props: {
+        type: "text",
+      },
+    },
+    { hidden: true },
+    { component: FormInput, label: "Is Disabled", name: "isDeleted" },
+    { component: FormInput, label: "Update By", name: "updateBy" },
+    { component: FormInput, label: "Update Date", name: "updateDate" },
+    { component: FormInput, label: "Version", name: "version" },
+    { component: FormInput, label: "Create By", name: "createBy" },
+    { component: FormInput, label: "Create Date", name: "createDate" },
+  ];
+
   return (
     <SectionContainer title="User Maintenance" subtitle={data?.name}>
       <Card label="View User">
-        <form>
-          <div className="fixed-grid has-3-cols has-1-cols-mobile">
-            <div className="grid">
-              <div className="cell mb-4">
-                <FormInput
-                  control={control}
-                  label="Username"
-                  name="username"
-                  type="text"
-                  rule={{ required: true }}
-                />
-              </div>
-              <div className="cell mb-4">
-                <FormInput
-                  control={control}
-                  label="Name"
-                  name="name"
-                  type="text"
-                  rule={{ required: true }}
-                />
-              </div>
-              <div className="cell mb-4 is-hidden-mobile"></div>
-              <div className="cell mb-4">
-                <FormInput
-                  control={control}
-                  label="Is Disabled"
-                  name="isDeleted"
-                  type="text"
-                />
-              </div>
-              <div className="cell mb-4">
-                <FormInput
-                  control={control}
-                  label="Update By"
-                  name="updateBy"
-                  type="text"
-                />
-              </div>
-              <div className="cell mb-4">
-                <FormInput
-                  control={control}
-                  label="Update Date"
-                  name="updateBy"
-                  type="text"
-                />
-              </div>
-              <div className="cell mb-4">
-                <FormInput
-                  control={control}
-                  label="Version"
-                  name="version"
-                  type="text"
-                />
-              </div>
-              <div className="cell mb-4">
-                <FormInput
-                  control={control}
-                  label="Create By"
-                  name="createBy"
-                  type="text"
-                />
-              </div>
-              <div className="cell mb-4">
-                <FormInput
-                  control={control}
-                  label="Create Date"
-                  name="createDate"
-                  type="text"
-                />
-              </div>
-            </div>
-          </div>
-        </form>
+        <Form control={control} fields={fields} />
       </Card>
     </SectionContainer>
   );
