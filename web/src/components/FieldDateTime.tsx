@@ -1,9 +1,18 @@
+import { convertDateTimeLocale } from "@/commons/utils";
 import { Controller } from "react-hook-form";
+import FieldView from "./FieldView";
 import type { IFormFieldBase } from "./Form";
 
 type IFieldDateTime = IFormFieldBase;
 
-function FieldDateTime({ control, label, name, rule, props }: IFieldDateTime) {
+function FieldDateTime({
+  control,
+  label,
+  name,
+  rule,
+  props,
+  isEdit,
+}: IFieldDateTime) {
   const controller = (
     <Controller
       name={name}
@@ -11,14 +20,20 @@ function FieldDateTime({ control, label, name, rule, props }: IFieldDateTime) {
       rules={rule}
       render={({ field, fieldState }) => (
         <>
-          <input
-            {...field}
-            {...props}
-            type="datetime-local"
-            className={`input ${fieldState.error ? "is-danger" : ""}`}
-          />
-          {fieldState.error && (
-            <p className="help is-danger">{fieldState.error.message}</p>
+          {isEdit ? (
+            <>
+              <input
+                {...field}
+                {...props}
+                type="datetime-local"
+                className={`input ${fieldState.error ? "is-danger" : ""}`}
+              />
+              {fieldState.error && (
+                <p className="help is-danger">{fieldState.error.message}</p>
+              )}
+            </>
+          ) : (
+            <FieldView value={convertDateTimeLocale(field.value as string)} />
           )}
         </>
       )}

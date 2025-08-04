@@ -15,3 +15,12 @@ export const convertDateTimeInput = (dateStr?: string) => {
   const mm = date.getMinutes();
   return `${yyyy}-${MM < 10 ? "0" + MM : MM}-${dd < 10 ? "0" + dd : dd}T${HH}:${mm}`;
 };
+
+export const convertDateTimeLocale = (dateStr?: string) => {
+  if (!dateStr) {
+    return "";
+  }
+
+  const date = new Date(dateStr);
+  return date.toLocaleString();
+};
