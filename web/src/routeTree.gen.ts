@@ -16,6 +16,7 @@ import { Route as AuthenticatedRouteImport } from './routes/_authenticated/route
 import { Route as IndexImport } from './routes/index'
 import { Route as AuthenticatedDashboardImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedMaintenanceUserImport } from './routes/_authenticated/maintenance/user'
+import { Route as AuthenticatedMaintenanceUserIdImport } from './routes/_authenticated/maintenance/user_.$id'
 
 // Create/Update Routes
 
@@ -46,6 +47,13 @@ const AuthenticatedMaintenanceUserRoute =
   AuthenticatedMaintenanceUserImport.update({
     id: '/maintenance/user',
     path: '/maintenance/user',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+
+const AuthenticatedMaintenanceUserIdRoute =
+  AuthenticatedMaintenanceUserIdImport.update({
+    id: '/maintenance/user_/$id',
+    path: '/maintenance/user/$id',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 
@@ -88,6 +96,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedMaintenanceUserImport
       parentRoute: typeof AuthenticatedRouteImport
     }
+    '/_authenticated/maintenance/user_/$id': {
+      id: '/_authenticated/maintenance/user_/$id'
+      path: '/maintenance/user/$id'
+      fullPath: '/maintenance/user/$id'
+      preLoaderRoute: typeof AuthenticatedMaintenanceUserIdImport
+      parentRoute: typeof AuthenticatedRouteImport
+    }
   }
 }
 
@@ -96,11 +111,13 @@ declare module '@tanstack/react-router' {
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedMaintenanceUserRoute: typeof AuthenticatedMaintenanceUserRoute
+  AuthenticatedMaintenanceUserIdRoute: typeof AuthenticatedMaintenanceUserIdRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedMaintenanceUserRoute: AuthenticatedMaintenanceUserRoute,
+  AuthenticatedMaintenanceUserIdRoute: AuthenticatedMaintenanceUserIdRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
@@ -112,6 +129,7 @@ export interface FileRoutesByFullPath {
   '/sign-in': typeof SignInRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/maintenance/user': typeof AuthenticatedMaintenanceUserRoute
+  '/maintenance/user/$id': typeof AuthenticatedMaintenanceUserIdRoute
 }
 
 export interface FileRoutesByTo {
@@ -120,6 +138,7 @@ export interface FileRoutesByTo {
   '/sign-in': typeof SignInRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/maintenance/user': typeof AuthenticatedMaintenanceUserRoute
+  '/maintenance/user/$id': typeof AuthenticatedMaintenanceUserIdRoute
 }
 
 export interface FileRoutesById {
@@ -129,13 +148,26 @@ export interface FileRoutesById {
   '/sign-in': typeof SignInRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/maintenance/user': typeof AuthenticatedMaintenanceUserRoute
+  '/_authenticated/maintenance/user_/$id': typeof AuthenticatedMaintenanceUserIdRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '' | '/sign-in' | '/dashboard' | '/maintenance/user'
+  fullPaths:
+    | '/'
+    | ''
+    | '/sign-in'
+    | '/dashboard'
+    | '/maintenance/user'
+    | '/maintenance/user/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '' | '/sign-in' | '/dashboard' | '/maintenance/user'
+  to:
+    | '/'
+    | ''
+    | '/sign-in'
+    | '/dashboard'
+    | '/maintenance/user'
+    | '/maintenance/user/$id'
   id:
     | '__root__'
     | '/'
@@ -143,6 +175,7 @@ export interface FileRouteTypes {
     | '/sign-in'
     | '/_authenticated/dashboard'
     | '/_authenticated/maintenance/user'
+    | '/_authenticated/maintenance/user_/$id'
   fileRoutesById: FileRoutesById
 }
 
@@ -180,7 +213,8 @@ export const routeTree = rootRoute
       "filePath": "_authenticated/route.tsx",
       "children": [
         "/_authenticated/dashboard",
-        "/_authenticated/maintenance/user"
+        "/_authenticated/maintenance/user",
+        "/_authenticated/maintenance/user_/$id"
       ]
     },
     "/sign-in": {
@@ -192,6 +226,10 @@ export const routeTree = rootRoute
     },
     "/_authenticated/maintenance/user": {
       "filePath": "_authenticated/maintenance/user.tsx",
+      "parent": "/_authenticated"
+    },
+    "/_authenticated/maintenance/user_/$id": {
+      "filePath": "_authenticated/maintenance/user_.$id.tsx",
       "parent": "/_authenticated"
     }
   }

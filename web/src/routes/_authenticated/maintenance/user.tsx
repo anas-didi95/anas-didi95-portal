@@ -1,7 +1,8 @@
+import type { IUser } from "@/commons/types";
 import Table from "@/components/Table";
 import useUserSearch from "@/hooks/user/useUserSearch";
 import useAppStore from "@/stores/AppStore";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect } from "react";
 
 export const Route = createFileRoute("/_authenticated/maintenance/user")({
@@ -11,6 +12,7 @@ export const Route = createFileRoute("/_authenticated/maintenance/user")({
 function MaintenanceUserPage() {
   const setNavbar = useAppStore((store) => store.action.setNavbar);
   const { data } = useUserSearch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     setNavbar(
@@ -34,7 +36,17 @@ function MaintenanceUserPage() {
               { name: "lastSigninDate", data: "lastSigninDate", width: "25%" },
             ]}
             slots={{
-              username: (data: string) => <a>{data}</a>,
+              username: (data: string, row: IUser) => (
+                <a
+                  onClick={() =>
+                    void navigate({
+                      to: "/maintenance/user/$id",
+                      params: { id: row.id },
+                    })
+                  }>
+                  {data}
+                </a>
+              ),
               isDeleted: (data: boolean) => (
                 <input type="checkbox" checked={data} />
               ),
