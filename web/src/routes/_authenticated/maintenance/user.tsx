@@ -22,8 +22,7 @@ function MaintenanceUserPage() {
   return (
     <section className="section">
       <section className="container">
-        <h1 className="title">Hi, </h1>
-        <h2 className="subtitle">Last Signed In:</h2>
+        <h1 className="title">User Maintenance</h1>
         <br />
         <div className="box">
           <Table

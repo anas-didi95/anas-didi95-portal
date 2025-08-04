@@ -1,31 +1,25 @@
 import type { ISignInForm, ITokenInfo } from "@/commons/types";
 import type { AxiosInstance } from "axios";
 
-export interface IAuthService {
-  signIn(data: ISignInForm, signal: AbortSignal): Promise<unknown>;
-  tokenInfo(signal: AbortSignal): Promise<ITokenInfo>;
-  signOut(signal: AbortSignal): Promise<unknown>;
-}
-
-export class AuthService implements IAuthService {
+export class AuthService {
   private readonly axios: AxiosInstance;
 
   constructor(axios: AxiosInstance) {
     this.axios = axios;
   }
 
-  async signIn(data: ISignInForm, signal: AbortSignal): Promise<unknown> {
-    const res = await this.axios.post("/signIn", data, { signal });
+  async signIn(data: ISignInForm, signal: AbortSignal) {
+    const res = await this.axios.post<unknown>("/signIn", data, { signal });
     return res.data;
   }
 
-  async tokenInfo(signal: AbortSignal): Promise<ITokenInfo> {
+  async tokenInfo(signal: AbortSignal) {
     const res = await this.axios.get<ITokenInfo>("/tokenInfo", { signal });
     return res.data;
   }
 
-  async signOut(signal: AbortSignal): Promise<unknown> {
-    const res = await this.axios.post("/signOut", null, { signal });
+  async signOut(signal: AbortSignal) {
+    const res = await this.axios.post<unknown>("/signOut", null, { signal });
     return res.data;
   }
 }
