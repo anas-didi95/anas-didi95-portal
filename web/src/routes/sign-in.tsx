@@ -1,5 +1,4 @@
 import type { ISignInForm } from "@/commons/types";
-import Button from "@/components/Button";
 import ButtonGroup from "@/components/ButtonGroup";
 import Card from "@/components/Card";
 import FieldPassword from "@/components/FieldPassword";
@@ -56,14 +55,17 @@ function SignInPage() {
                 isPending={isPending}
                 onSubmit={handleSignIn}>
                 <br />
-                <ButtonGroup align="right">
-                  <Button
-                    color="primary"
-                    type="submit"
-                    label="Sign In"
-                    isLoading={isPending}
-                  />
-                </ButtonGroup>
+                <ButtonGroup
+                  align="right"
+                  buttons={[
+                    {
+                      color: "primary",
+                      type: "submit",
+                      label: "Sign In",
+                      isLoading: isPending,
+                    },
+                  ]}
+                />
               </Form>
             </Card>
           </div>

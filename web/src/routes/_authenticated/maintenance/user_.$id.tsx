@@ -1,6 +1,5 @@
 import type { IUser } from "@/commons/types";
 import { convertDateTimeInput } from "@/commons/utils";
-import Button from "@/components/Button";
 import ButtonGroup from "@/components/ButtonGroup";
 import Card from "@/components/Card";
 import FieldCheckbox from "@/components/FieldCheckbox";
@@ -83,14 +82,17 @@ function MaintenanceUserIdPage() {
       <Card label="View User">
         <Form control={control} fields={fields} isPending={isLoading} />
         <br />
-        <ButtonGroup align="right">
-          <Button
-            type="button"
-            color="primary"
-            label="Edit"
-            onClick={() => setEdit((prev) => !prev)}
-          />
-        </ButtonGroup>
+        <ButtonGroup
+          align="right"
+          buttons={[
+            {
+              type: "button",
+              color: "primary",
+              label: "Edit",
+              onClick: () => setEdit((prev) => !prev),
+            },
+          ]}
+        />
       </Card>
     </SectionContainer>
   );
