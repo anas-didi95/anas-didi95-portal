@@ -19,7 +19,7 @@ function ButtonGroup({ align, buttons }: IButtonGroup) {
 
 export default ButtonGroup;
 
-interface IButton {
+export interface IButton {
   label: string;
   color: TColor;
   type: "button" | "submit" | "reset";

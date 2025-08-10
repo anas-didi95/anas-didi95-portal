@@ -1,6 +1,6 @@
 import type { IUser } from "@/commons/types";
 import { convertDateTimeInput } from "@/commons/utils";
-import ButtonGroup from "@/components/ButtonGroup";
+import ButtonGroup, { type IButton } from "@/components/ButtonGroup";
 import Card from "@/components/Card";
 import FieldCheckbox from "@/components/FieldCheckbox";
 import FieldDateTime from "@/components/FieldDateTime";
@@ -23,7 +23,7 @@ function MaintenanceUserIdPage() {
   const setNavbar = useAppStore((store) => store.action.setNavbar);
   const { data, isLoading } = useUserGetUser(id);
   const [isEdit, setEdit] = useState(false);
-  const { control } = useForm<IUser>({
+  const { control, reset } = useForm<IUser>({
     values: data && {
       ...data,
       updateDate: convertDateTimeInput(data.updateDate),
@@ -38,62 +38,83 @@ function MaintenanceUserIdPage() {
     );
   }, [data?.username, setNavbar]);
 
-  const fields: IFormFieldConfig[] = [
-    {
-      component: FieldText,
-      label: "Username",
-      name: "username",
-      rule: { required: true },
-      isEdit,
-    },
-    {
-      component: FieldText,
-      label: "Name",
-      name: "name",
-      rule: { required: true },
-      isEdit,
-    },
-    { hidden: true },
-    {
-      component: FieldCheckbox,
-      label: "Is Disabled",
-      name: "isDeleted",
-      isEdit,
-    },
-    { component: FieldText, label: "Update By", name: "updateBy", isEdit },
-    {
-      component: FieldDateTime,
-      label: "Update Date",
-      name: "updateDate",
-      isEdit,
-    },
-    { component: FieldText, label: "Version", name: "version", isEdit },
-    { component: FieldText, label: "Create By", name: "createBy", isEdit },
-    {
-      component: FieldDateTime,
-      label: "Create Date",
-      name: "createDate",
-      isEdit,
-    },
-  ];
+  const handleEdit = () => setEdit((prev) => !prev);
+  const handleCancel = () => {
+    setEdit((prev) => !prev);
+    reset();
+  };
+  const fields = prepareFields(isEdit);
+  const buttons = prepareButtons(isEdit, handleEdit, handleCancel);
 
   return (
     <SectionContainer title="User Maintenance" subtitle={data?.name}>
-      <Card label="View User">
+      <Card label={`${isEdit ? "Edit" : "View"} User`}>
         <Form control={control} fields={fields} isPending={isLoading} />
         <br />
-        <ButtonGroup
-          align="right"
-          buttons={[
-            {
-              type: "button",
-              color: "primary",
-              label: "Edit",
-              onClick: () => setEdit((prev) => !prev),
-            },
-          ]}
-        />
+        <ButtonGroup align="right" buttons={buttons} />
       </Card>
     </SectionContainer>
   );
 }
+
+const prepareFields = (isEdit: boolean): IFormFieldConfig[] => [
+  {
+    component: FieldText,
+    label: "Username",
+    name: "username",
+    rule: { required: true },
+    isEdit,
+  },
+  {
+    component: FieldText,
+    label: "Name",
+    name: "name",
+    rule: { required: true },
+    isEdit,
+  },
+  { hidden: true },
+  {
+    component: FieldCheckbox,
+    label: "Is Disabled",
+    name: "isDeleted",
+    isEdit,
+  },
+  { component: FieldText, label: "Update By", name: "updateBy", isEdit },
+  {
+    component: FieldDateTime,
+    label: "Update Date",
+    name: "updateDate",
+    isEdit,
+  },
+  { component: FieldText, label: "Version", name: "version", isEdit },
+  { component: FieldText, label: "Create By", name: "createBy", isEdit },
+  {
+    component: FieldDateTime,
+    label: "Create Date",
+    name: "createDate",
+    isEdit,
+  },
+];
+
+const prepareButtons = (
+  isEdit: boolean,
+  handleEdit: () => void,
+  handleCancel: () => void,
+): IButton[] =>
+  isEdit
+    ? [
+        {
+          type: "reset",
+          color: "warning",
+          label: "Cancel",
+          onClick: handleCancel,
+        },
+      ]
+    : [
+        {
+          type: "button",
+          color: "primary",
+          label: "Edit",
+          onClick: handleEdit,
+        },
+      ];
