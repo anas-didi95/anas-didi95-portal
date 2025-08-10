@@ -1,4 +1,5 @@
 ---
+app.module.SSE.timeout: "PT15M"
 app.module.USER.ADD_USER.enabled: true
 datasources:
   default:

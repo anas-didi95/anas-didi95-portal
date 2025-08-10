@@ -9,6 +9,10 @@ export type TColor =
 export type TAlignment = "left" | "centered" | "justified" | "right";
 
 // Interface
+export interface IEventSourceMessage {
+  message: string;
+}
+
 export interface IErrorResponse {
   isRetry: boolean;
   message: string;

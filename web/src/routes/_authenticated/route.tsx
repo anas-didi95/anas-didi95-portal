@@ -1,3 +1,4 @@
+import type { IEventSourceMessage } from "@/commons/types";
 import Navbar from "@/components/Navbar";
 import useAuthTokenInfo, { queryKey } from "@/hooks/auth/useAuthTokenInfo";
 import useAppStore from "@/stores/AppStore";
@@ -23,29 +24,40 @@ function AuthenticatedLayout() {
   const reset = useAppStore((store) => store.action.reset);
   const navigate = useNavigate();
   const eventSourceRef = useRef<EventSource>(null);
+  const reconnectDelay = useRef(3000);
 
   useEffect(() => {
-    const eventSource = new EventSource('/portal/api/v1/sse/connect');
-    eventSourceRef.current = eventSource;
+    let closedByUser = false;
 
-    eventSource.onmessage = (event) => {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-argument
-      const data = JSON.parse(event.data);
-      toast.success(event.data as string);
-      console.log("data", data)
+    const connect = () => {
+      const eventSource = new EventSource("/portal/api/v1/sse/connect");
+      eventSourceRef.current = eventSource;
+
+      eventSource.onmessage = (event) => {
+        const data = JSON.parse(event.data as string) as IEventSourceMessage;
+        toast.success(data.message);
+        reconnectDelay.current = 3000; // reset delay
+      };
+
+      eventSource.onerror = (err) => {
+        console.warn("SSE error:", err);
+        eventSource.close();
+        if (!closedByUser) {
+          setTimeout(connect, reconnectDelay.current);
+          reconnectDelay.current = Math.min(reconnectDelay.current * 2, 30000); // exponential backoff
+        }
+      };
     };
 
-    eventSource.onerror = (err) => {
-      console.error('SSE error:', err);
-      eventSource.close();
-    };
+    connect();
 
     return () => {
+      closedByUser = true;
       if (eventSourceRef.current) {
         eventSourceRef.current.close();
       }
     };
-  }, [])
+  }, []);
 
   if (!isFetching && isError) {
     reset();
