@@ -35,3 +35,7 @@ Content-Type: application/json
   "password": "p@ssw0rd",
   "name": "Anas Juwaidi Bin Mohd Jeffry"
 }
+
+###
+
+GET {{BASE_URL}}/portal/api/v1/sse/count
